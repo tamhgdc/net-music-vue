@@ -47,7 +47,6 @@ export default {
     this.n = this.$route.params.n;
 
     await loadSongDetailAPI(this.$route.params.id).then((res) => {
-      console.log(res);
       this.imgSrc = res.songs[0].al.picUrl;
     });
     // console.log(this.$route.params.id);
@@ -55,16 +54,17 @@ export default {
 
     // console.log(res);
     this.mp3url = res.data[0].url;
-    /* 解析歌词 */
-    loadLyricAPI(this.$route.params.id).then((lrcData) => {
-      console.log(lrcData.lrc.lyric);
-      console.log(lrcData.tlyric.lyric);
 
+    // 解析歌词
+    await loadLyricAPI(this.$route.params.id).then((lrcData) => {
+      // console.log(lrcData);
+      // 加载歌词
       this.lrc = this.lyricParse(lrcData.lrc.lyric);
-      // console.log(this.lrc);
-      if (lrcData.tlyric) {
+      // 歌词翻译大于0 加载翻译歌词
+      if (lrcData.tlyric.length > 0) {
+        // console.log(lrcData.tlyric.lyric);
         const tlrc = this.lyricParse(lrcData.tlyric.lyric);
-        console.log(tlrc);
+        // console.log(tlrc);
         this.lrc.text = this.lrc.text.map((x, i) => {
           const index = tlrc.time.indexOf(this.lrc.time[i]);
 
@@ -79,6 +79,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      // 歌词高亮
       this.timer = setInterval(() => {
         const arr = [...this.lrc.time].map((x) =>
           Math.abs(x - this.$refs.s_player.currentTime)
