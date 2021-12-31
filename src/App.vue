@@ -1,32 +1,84 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <!-- 路由视图 -->
+    <router-view />
+    <!-- 底部导航 -->
+    <van-tabbar
+      class="nav"
+      v-model="active"
+      active-color="#ee0a24"
+      inactive-color="#000"
+      v-show="$route.meta.isNavShow"
+    >
+      <van-tabbar-item v-for="(v, k) in icons" :key="k">
+        <van-icon
+          class="iconfont"
+          slot="icon"
+          class-prefix="icon"
+          :name="v"
+        ></van-icon>
+        <span>{{ k }}</span>
+      </van-tabbar-item>
+    </van-tabbar>
   </div>
 </template>
-
+<script>
+export default {
+  data() {
+    return {
+      active: 0,
+      icons: {
+        发现: "wyy",
+        播客: "guangbo",
+        我的: "yinleyinpin",
+        关注: "yonghubangding-copy",
+        云村: "luntan",
+      },
+    };
+  },
+};
+</script>
 <style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  margin: 0;
+  padding: 0;
 }
+body,
+html {
+  width: 100vw;
+  height: 100vh;
+  font-size: 4vw;
+  color: #505050;
+}
+li {
+  list-style: none;
+}
+input {
+  outline: 0;
+  border: 0;
+}
+a {
+  color: #505050;
+  text-decoration: none;
+}
+.iconfont {
+  position: relative;
+}
+</style>
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+<style lang="less" scoped>
+#app {
+  background-color: #f5f5f5;
+  width: 100%;
+  height: 100%;
+  div:nth-of-type(1) {
+    height: 90%;
+  }
+}
+.nav {
+  height: 10%;
+  i {
+    font-size: 2rem;
   }
 }
 </style>
