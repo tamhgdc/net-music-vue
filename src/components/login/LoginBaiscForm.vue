@@ -25,6 +25,8 @@
 import md5 from "crypto-js/md5";
 import { Toast } from "vant";
 import { loginByPhoneAPI, loginByEmailAPI } from "../../service/login.js";
+import { mapMutations, mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -37,8 +39,11 @@ export default {
       this.login((res) => {
         if (res.code == 200) {
           Toast.success("登录成功");
-          this.$store.commit("setProfile", res.profile);
-          this.$store.dispatch("loadPrivateMsg");
+          // 设置用户信息
+          this.setProfile(res.profile);
+          // 加载用户数据
+          this.loadUserData();
+          // 返回上一级页面
           this.$router.go(-1);
         } else {
           Toast.fail("登录失败");
@@ -60,6 +65,8 @@ export default {
         }).then((res) => callback(res));
       }
     },
+    ...mapActions("user", ["loadUserData"]),
+    ...mapMutations("user", ["setProfile"]),
   },
 };
 </script>

@@ -37,4 +37,11 @@ export const loadPrivateFMPlayListAPI = () => get('/personal_fm');
  * @param {*} uid 用户uid
  * @returns 
  */
-export const loadLikePlayListAPI = (uid) => get('/likelist', { uid });
+export const loadLikePlayListAPI = (uid) => get('/likelist?uid=', uid);
+
+/**
+ * 获取用户喜欢
+ * @param {*} uid 用户uid
+ * @returns 
+ */
+export const loadUserPlayListAPI = (uid) => get('/user/playlist?uid=', uid)

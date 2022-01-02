@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <!-- 顶部搜索框 -->
-    <TopSearch></TopSearch>
     <!-- 轮播图 -->
     <HomeSwiper :banners="banners" :delay="2000"></HomeSwiper>
     <!-- 滚动导航 -->
@@ -22,7 +20,6 @@
 // @ is an alias to /src
 import MySwiper from "../components/home/MySwipe.vue";
 import HomeSwiper from "../components/home/HomeSwiper.vue";
-import TopSearch from "../components/home/Top.vue";
 import SwipeNav from "../components/home/SwipeNav.vue";
 import RemdList from "../components/home/RemdList.vue";
 import { loadHomePageAPI } from "../service/homepage.js";
@@ -49,7 +46,6 @@ export default {
     });
   },
   components: {
-    TopSearch,
     MySwiper,
     SwipeNav,
     RemdList,

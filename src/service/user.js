@@ -7,6 +7,12 @@ import { get, post } from '../utils/request'
 export const loadPrivateMsgAPI = () => get('/msg/private')
 
 /**
+ * 获取用户等级
+ * @returns 
+ */
+export const loadUserLevelAPI = () => get('/user/level')
+
+/**
  * 签到
  * @returns 
  */
