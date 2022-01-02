@@ -41,7 +41,6 @@ export default {
 </script>
 
 <style lang="less">
-@fc: #e0001b;
 .list-top-nav {
   .van-nav-bar {
     height: 14vw;
@@ -51,7 +50,6 @@ export default {
     border: 0;
   }
   .van-icon {
-    color: @fc;
     font-size: 6vw !important;
   }
   .van-nav-bar__right {

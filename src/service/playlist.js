@@ -45,3 +45,10 @@ export const loadLikePlayListAPI = (uid) => get('/likelist', { uid });
  * @returns 
  */
 export const loadUserPlayListAPI = (uid) => get('/user/playlist', { uid })
+
+/**
+ * 获取用户最近播放歌曲
+ * @param {*} limit 
+ * @returns 
+ */
+export const loadRecentlyPlayedSongsAPI = (limit = 100) => get('/record/recent/song', { limit })

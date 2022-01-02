@@ -1,24 +1,19 @@
 <template>
-  <div>
+  <div class="playlist-panel">
     <van-tabs v-model="activeName">
-      <van-tab title="标签 1" name="a">
-        <div class="list-item" v-for="list in playlist" :key="list.id">
-          <div>
-            <img :src="list.coverImgUrl" alt="" />
-          </div>
-          <div>
-            <p>{{ list.name }}</p>
-            <p></p>
-          </div>
-        </div>
+      <van-tab title="创建歌单" name="a">
+        <MinePlayList :playlist="playlist" />
       </van-tab>
-      <van-tab title="标签 2" name="b"> </van-tab>
+      <van-tab title="收藏的歌单" name="b">
+        <MinePlayList :playlist="favoritePlaylist" />
+      </van-tab>
       <van-tab title="标签 3" name="c"> </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
+import MinePlayList from "./MinePlayList.vue";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -27,9 +22,12 @@ export default {
     };
   },
   computed: {
-    ...mapState("user", ["isLogin", "playlist"]),
+    ...mapState("user", ["playlist", "favoritePlaylist"]),
+  },
+  components: {
+    MinePlayList,
   },
 };
 </script>
 
-<style></style>
+<style lang="less" scoped></style>

@@ -1,15 +1,17 @@
 import { loadPrivateMsgAPI, logoutAPI, loadUserLevelAPI } from '../../service/user'
-import { loadUserPlayListAPI, loadLikePlayListAPI } from '../../service/playlist'
-import { loadSongDetailAPI } from '../../service/song'
+import { loadUserPlayListAPI, loadRecentlyPlayedSongsAPI } from '../../service/playlist'
+
 
 function initState() {
     return {
         profile: {},
         privateMsg: {},
         playlist: [],
+        likePlayList: {},
+        favoritePlaylist: [],
         isLogin: false,
-        likePlayList: [],
-        level: {}
+        level: {},
+        recentlyPlayedSongs: [],
     }
 }
 export default {
@@ -24,24 +26,21 @@ export default {
             })
             // 获取用户播放列表
             loadUserPlayListAPI(state.profile.userId).then(res => {
-                commit('setting', { key: 'playlist', payload: res.playlist })
+                const playlist = res.playlist;
+                // 获取用户创建的歌单
+                commit('setting', { key: 'playlist', payload: playlist.filter(i => i.userId == state.profile.userId && i.specialType == 0) })
+                // 获取用户喜欢的音乐
+                commit('setting', { key: 'likePlayList', payload: playlist.filter(i => i.userId == state.profile.userId && i.specialType == 5)[0] })
+                // 获取用户收藏的歌单
+                commit('setting', { key: 'favoritePlaylist', payload: playlist.filter(i => i.userId != state.profile.userId && i.specialType == 0) })
             })
             // 获取用户等级
             loadUserLevelAPI().then(res => {
                 commit('setting', { key: 'level', payload: res.data })
             })
-            // 获取用户喜欢的音乐
-            loadLikePlayListAPI().then(res => {
-                loadSongDetailAPI(res.ids).then(r => {
-                    commit('setting', {
-                        key: 'likePlayList',
-                        payload: r.map(x => x.songs[0])
-                    })
-                })
-                // loadPlaylistByIdAPI(res.ids).then(r => {
-                //     commit('setting', { key: 'likePlayList', payload: r.filter(i => i != 'error') })
-                // })
-
+            // 获取最近播放歌曲
+            loadRecentlyPlayedSongsAPI().then(res => {
+                commit('setting', { key: 'recentlyPlayedSongs', payload: res.data.list })
             })
         },
         logout({ commit }) {
@@ -74,5 +73,11 @@ export default {
         setLevel(state, payload) {
             state.profile['level'] = payload;
         },
+    },
+
+    getters: {
+        getLikePlayListImg(state) {
+            return state.likePlayList.coverImgUrl;
+        }
     }
 }

@@ -3,14 +3,14 @@
     <div>
       <router-link to="/">
         <div class="img-wrap">
-          <img :src="isLogin ? likePlayList[0].al.picUrl : null" />
+          <img :src="isLogin ? getLikePlayListImg() : null" />
           <div>
             <van-icon class="icon" name="like"> </van-icon>
           </div>
         </div>
         <div class="text-wrap">
           <p>我喜欢的音乐</p>
-          <p><span v-text="isLogin ? likePlayList.length : 0"></span>首</p>
+          <p><span v-text="isLogin ? likePlayList.trackCount : 0"></span>首</p>
         </div>
       </router-link>
     </div>
@@ -18,10 +18,13 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapState("user", ["isLogin", "likePlayList"]),
+  },
+  methods: {
+    ...mapGetters("user", ["getLikePlayListImg"]),
   },
 };
 </script>

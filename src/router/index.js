@@ -54,7 +54,7 @@ const routes = [{
         }
     },
     {
-        path: '/player/:id',
+        path: '/player/:id/:n',
         name: 'Player',
         component: () => import('../views/Player.vue'),
         meta: {
