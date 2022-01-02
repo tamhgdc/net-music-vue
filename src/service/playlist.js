@@ -11,37 +11,37 @@ export const loadPlaylistAPI = () => get('/personalized')
  * @param {*} limit 获取数量
  * @returns 
  */
-export const loadPlaylistAndLimitAPI = (limit = 6) => get('/personalized?limit=' + limit)
+export const loadPlaylistAndLimitAPI = (limit = 6) => get('/personalized', { limit })
 
 /**
  * 通过 ID 获取播放列表
  * @param {*} id 播放列表 ID
  * @returns 
  */
-export const loadPlaylistByIdAPI = (id) => get('/playlist/detail?id=' + id)
+export const loadPlaylistByIdAPI = (id) => get('/playlist/detail', { id })
 
 /**
  * 获取每日推荐歌单（需登录）
  * @returns 
  */
-export const loadDailyRemdPlayListAPI = () => get('/recommend/resource');
+export const loadDailyRemdPlayListAPI = () => get('/recommend/resource')
 
 /**
  * 获取私人FM歌单（需登录）
  * @returns 
  */
-export const loadPrivateFMPlayListAPI = () => get('/personal_fm');
+export const loadPrivateFMPlayListAPI = () => get('/personal_fm')
 
 /**
  * 获取用户喜欢列表
  * @param {*} uid 用户uid
  * @returns 
  */
-export const loadLikePlayListAPI = (uid) => get('/likelist?uid=', uid);
+export const loadLikePlayListAPI = (uid) => get('/likelist', { uid });
 
 /**
- * 获取用户喜欢
+ * 获取用户歌单
  * @param {*} uid 用户uid
  * @returns 
  */
-export const loadUserPlayListAPI = (uid) => get('/user/playlist?uid=', uid)
+export const loadUserPlayListAPI = (uid) => get('/user/playlist', { uid })

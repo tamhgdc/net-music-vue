@@ -57,11 +57,11 @@ export default {
 
     // 解析歌词
     await loadLyricAPI(this.$route.params.id).then((lrcData) => {
-      // console.log(lrcData);
+      console.log(lrcData);
       // 加载歌词
       this.lrc = this.lyricParse(lrcData.lrc.lyric);
       // 歌词翻译大于0 加载翻译歌词
-      if (lrcData.tlyric.length > 0) {
+      if (lrcData.tlyric.lyric.length > 0) {
         // console.log(lrcData.tlyric.lyric);
         const tlrc = this.lyricParse(lrcData.tlyric.lyric);
         // console.log(tlrc);

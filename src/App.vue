@@ -84,11 +84,15 @@ a {
   background-color: #f5f5f5;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   div:nth-of-type(2) {
-    height: 90%;
+    flex: 1;
+    overflow: auto;
   }
 }
 .nav {
+  position: static !important;
   height: 10%;
   i {
     font-size: 2rem;

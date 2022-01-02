@@ -1,15 +1,23 @@
 <template>
   <div class="mine">
-    <MineBaseInfo></MineBaseInfo>
-    <h1>我的</h1>
+    <MineBaseInfo />
+    <MineOparetePanel />
+    <MineFavoriteMusic />
+    <MinePlayListPanel />
   </div>
 </template>
 
 <script>
 import MineBaseInfo from "../components/mine/MineBaseInfo.vue";
+import MineOparetePanel from "../components/mine/MineOparetePanel.vue";
+import MineFavoriteMusic from "../components/mine/MineFavoriteMusic.vue";
+import MinePlayListPanel from "../components/mine/MinePlayListPanel.vue";
 export default {
   components: {
     MineBaseInfo,
+    MineOparetePanel,
+    MineFavoriteMusic,
+    MinePlayListPanel,
   },
 };
 </script>
@@ -18,11 +26,13 @@ export default {
 .mine {
   overflow: hidden;
   & > div {
-    width: 95vw;
+    width: 80vw;
     margin-left: auto;
     margin-right: auto;
-    padding: 5vw 0;
-    border-radius: 3vw;
+    margin: 5vw;
+    padding: 5vw;
+    border-radius: 3vw !important;
+    background-color: white;
   }
 }
 </style>

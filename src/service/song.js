@@ -5,18 +5,18 @@ import { get } from '../utils/request';
  * @param {*} id 
  * @returns 
  */
-export const loadSongUrlAPI = (id) => get('/song/url?id=', id)
+export const loadSongUrlAPI = (id) => get('/song/url', { id })
 
 /**
  * 获取歌词
  * @param {*} id 
  * @returns 
  */
-export const loadLyricAPI = (id) => get('/lyric?id=', id)
+export const loadLyricAPI = (id) => get('/lyric', { id })
 
 /**
  * 获取歌曲详情
  * @param {*} id 
  * @returns 
  */
-export const loadSongDetailAPI = (id) => get('/song/detail?ids=', id)
+export const loadSongDetailAPI = (ids) => get('/song/detail', { ids })
