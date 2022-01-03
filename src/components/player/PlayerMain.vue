@@ -1,19 +1,13 @@
 <template>
   <div class="main-player">
+    <PlayerOperatePanel :id="id" />
     <!-- 进度条时间 -->
     <div class="play-times">
-      <span :v-text="playState ? getCurrentTime : '00:00'"></span>
-      <span
-        ><van-progress
-          :percentage="75"
-          track-color="lightgray"
-          pivot-color="lightgray"
-          color="#ffffff"
-          :show-pivot="false"
-          stroke-width=".8vw"
-        />
+      <span>{{ currTime | format }}</span>
+      <span>
+        <PlayerProgress />
       </span>
-      <span :v-text="playState ? getDuration : '00:00'"></span>
+      <span>{{ duration | format }}</span>
     </div>
     <!-- 播放控制 -->
     <!-- 播放模式 -->
@@ -36,7 +30,7 @@
       <van-icon
         @click="playState ? pause() : play()"
         :name="playState ? 'pause-circle-o' : 'play-circle-o'"
-        size="18vw"
+        size="15vw"
       />
       <!-- 下一曲 -->
       <van-icon
@@ -60,7 +54,9 @@
 </template>
 
 <script>
+import PlayerProgress from "./PlayerProgress.vue";
 import PlayerActionSheet from "./PlayerActionSheet.vue";
+import PlayerOperatePanel from "./PlayerOperatePanel.vue";
 import { mapMutations, mapGetters, mapActions, mapState } from "vuex";
 export default {
   props: ["id"],
@@ -77,15 +73,25 @@ export default {
     ...mapActions("player", ["playById"]),
   },
   computed: {
-    ...mapGetters("player", ["getDuration", "getCurrentTime", "currId"]),
-    ...mapState("player", ["playState"]),
+    ...mapGetters("player", ["currId"]),
+    ...mapState("player", ["playState", "duration", "currTime"]),
   },
+  watch: {},
   created() {},
   mounted() {
     this.playById(this.id);
   },
   components: {
     PlayerActionSheet,
+    PlayerProgress,
+    PlayerOperatePanel,
+  },
+  filters: {
+    format(v) {
+      const m = String(v < 60 ? 0 : parseInt(v / 60)).padStart(2, "0");
+      const s = String(parseInt(v - m * 60)).padStart(2, "0");
+      return m + ":" + s;
+    },
   },
 };
 </script>
@@ -103,7 +109,7 @@ export default {
   position: fixed;
   bottom: 0;
   .play-times {
-    height: 10vw;
+    height: 5vw;
     display: flex;
     align-items: center;
 
@@ -111,6 +117,7 @@ export default {
       width: 15vw;
       text-align: center;
       color: white;
+      height: 5vw;
     }
     span:nth-of-type(2) {
       flex: 1;
@@ -118,13 +125,13 @@ export default {
   }
   .play-control {
     display: flex;
-    height: 20vw;
+    height: 15vw;
     justify-content: space-around;
     align-items: center;
     color: white;
 
     .iconfont {
-      font-size: 8vw;
+      font-size: 6vw;
     }
   }
 }

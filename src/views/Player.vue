@@ -34,9 +34,10 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import { loadSongDetailAPI, loadLyricAPI } from "../service/song";
 import PlayerDisc from "../components/player/PlayerDisc.vue";
 import PlayerMain from "../components/player/PlayerMain.vue";
-import { loadSongDetailAPI, loadLyricAPI } from "../service/song";
+
 export default {
   data() {
     return {
@@ -55,14 +56,14 @@ export default {
     currId(v) {
       if (v) {
         loadSongDetailAPI(v).then((res) => {
-          console.log(res);
+          // console.log(res);
           this.imgSrc = res.songs[0].al.picUrl;
           this.n = res.songs[0].name;
           this.$refs.bg.style.backgroundImage = `url(${this.imgSrc})`;
         });
         // 解析歌词
         loadLyricAPI(v).then((lrcData) => {
-          console.log(lrcData);
+          // console.log(lrcData);
           // 加载歌词
           if (!lrcData.lrc.lyric.match("纯音乐")) {
             this.lrc = this.lyricParse(lrcData.lrc.lyric);
@@ -84,8 +85,9 @@ export default {
         });
 
         /* 设置高亮 */
+
         this.myPlayer.ontimeupdate = () => {
-          // console.log(this.$refs.s_player.currentTime);
+          this.updateTime();
           // 歌词高亮
           if (this.lrc.time && this.lrc.text && this.myPlayer.currentTime) {
             const arr = [...this.lrc.time].map((x) =>
@@ -97,8 +99,8 @@ export default {
               // console.log(this.$refs);
               this.$refs.lrcWrap.scrollTop =
                 this.$refs.lrcWrap.children[index - 1].offsetTop;
-              this.$refs.lrcWrap.children[index - 1].style.color = "black";
-              this.$refs.lrcWrap.children[index].style.color = "red";
+              this.$refs.lrcWrap.children[index - 1].style.color = "#f1f1f170";
+              this.$refs.lrcWrap.children[index].style.color = "#fff";
               this.currIndex = index;
             }
           }
@@ -141,7 +143,7 @@ export default {
       this.$router.go(-1);
     },
     onClickRight() {},
-    ...mapMutations("player", ["next"]),
+    ...mapMutations("player", ["next", "updateTime"]),
   },
 };
 </script>
@@ -173,7 +175,7 @@ export default {
     background-color: #313131;
     background-size: cover;
     background-position: center;
-    filter: blur(10px);
+    filter: blur(5vw);
   }
 
   > div:nth-of-type(2) {
@@ -213,7 +215,7 @@ export default {
     right: 32vw;
     z-index: 2;
     transition: transform 1s;
-    transform-origin: left top;
+    transform-origin: 3vw 3vw;
   }
   .img-wrap {
     top: 35vw;
@@ -224,6 +226,10 @@ export default {
     height: 35vw;
     overflow: auto;
     position: relative;
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+    }
     p {
       text-align: center;
       padding: 2vw 0;

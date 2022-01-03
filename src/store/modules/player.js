@@ -7,9 +7,11 @@ function initState() {
         playlist: [],
         currIndex: 0,
         playState: true,
-        currTime: '',
+        currTime: '00:00',
         currId: 0,
-        duration: '',
+        duration: '00:00',
+        percent: 0,
+        favList: [],
     }
 }
 export default {
@@ -26,7 +28,7 @@ export default {
             })
         },
         async playById({ commit }, payload) {
-            const song = {};
+            const song = { isFav: false };
             /* 获取mp3链接 */
             await loadSongUrlAPI(payload).then(r => {
                 song.url = r.data[0].url
@@ -36,6 +38,8 @@ export default {
             await loadSongDetailAPI(payload).then(r => {
                 song.detail = r.songs[0]
             })
+            if (song.url == null) return
+
             commit('settingUrl', song)
         }
     },
@@ -50,6 +54,11 @@ export default {
         setting(state, { key, payload }) {
             state[key] = payload
         },
+        /**
+         * 添加播放地址
+         * @param {*} state 
+         * @param {*} payload 
+         */
         settingUrl(state, payload) {
             /* 若歌曲已存在 则删除后重新添加 */
             const i = state.playlist.findIndex(x => x.id == payload.id)
@@ -59,58 +68,81 @@ export default {
             /* 将歌曲push进播放列表 */
             state.playlist.push(payload)
             state.currIndex = state.playlist.length - 1
-
             state.myPlayer.src = state.playlist[state.playlist.length - 1].url
             state.currId = state.playlist[state.playlist.length - 1].id
             state.myPlayer.autoplay = true
             state.playState = true
         },
+        /**
+         * 播放
+         * @param {*} state 
+         */
         play(state) {
             state.playState = true
             state.myPlayer.play()
         },
+        /**
+         * 暂停
+         * @param {*} state 
+         */
         pause(state) {
             state.playState = false
             state.myPlayer.pause()
         },
+        /**
+         * 播放列表下一曲
+         * @param {*} state 
+         */
         next(state) {
             state.currIndex = state.currIndex + 1 >= state.playlist.length ? 0 : state.currIndex + 1
             state.myPlayer.src = state.playlist[state.currIndex].url
             state.currId = state.playlist[state.currIndex].id
             state.playState = true
         },
+        /**
+         * 播放列表上一曲
+         * @param {*} state 
+         */
         prev(state) {
             state.currIndex = state.currIndex - 1 < 0 ? state.playlist.length - 1 : state.currIndex - 1
             state.myPlayer.src = state.playlist[state.currIndex].url
             state.currId = state.playlist[state.currIndex].id
             state.playState = true
+        },
+        /**
+         * 刷新播放时间
+         * @param {*} state 
+         */
+        updateTime(state) {
+            state.duration = state.myPlayer.duration
+            state.currTime = state.myPlayer.currentTime
+            state.percent = state.myPlayer.currentTime / state.myPlayer.duration * 100
+        },
+        /**
+         * 滚动条百分比设置播放进度
+         * @param {*} state 
+         * @param {*} payload 
+         */
+        setPosition(state, payload) {
+            state.myPlayer.currentTime = state.myPlayer.duration * payload
+            state.currTime = state.myPlayer.currentTime
+        },
+        /**
+         * 登录后设置歌曲喜欢状态
+         * @param {*} state 
+         * @param {*} payload 
+         */
+        //TODO： 歌曲喜欢功能
+        setFav(state, payload) {
+            payload.forEach(x => {
+                const fav = state.playlist.find(y => {
+                    return y.id == x
+                })
+                if (fav) fav.isFav = true
+            })
         }
     },
     getters: {
-        /**
-         * 获取总时长
-         * @param {*} state 
-         * @returns 
-         */
-        getDuration(state) {
-            return state.myPlayer.duration
-        },
-        /**
-         * 获取播放时间
-         * @param {*} state 
-         * @returns 
-         */
-        getCurrentTime(state) {
-            return state.myPlayer.currentTime
-        },
-        /**
-         * 获取播放进度百分比
-         * @param {*} state 
-         * @returns 
-         */
-        getPercent(state) {
-            return parseInt(state.myPlayer.currentTime / state.myPlayer.duration * 10000) / 100
-        },
         /**
          * 获取当前播放歌曲的ID
          * @param {*} state 

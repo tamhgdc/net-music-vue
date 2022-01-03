@@ -1,5 +1,5 @@
 import { loadPrivateMsgAPI, logoutAPI, loadUserLevelAPI } from '../../service/user'
-import { loadUserPlayListAPI, loadRecentlyPlayedSongsAPI } from '../../service/playlist'
+import { loadUserPlayListAPI, loadPlaylistByIdAPI, loadRecentlyPlayedSongsAPI } from '../../service/playlist'
 
 
 function initState() {
@@ -30,7 +30,15 @@ export default {
                 // 获取用户创建的歌单
                 commit('setting', { key: 'playlist', payload: playlist.filter(i => i.userId == state.profile.userId && i.specialType == 0) })
                 // 获取用户喜欢的音乐
-                commit('setting', { key: 'likePlayList', payload: playlist.filter(i => i.userId == state.profile.userId && i.specialType == 5)[0] })
+                // const fav = ;
+                loadPlaylistByIdAPI((playlist.filter(i => i.userId == state.profile.userId && i.specialType == 5)[0]).id).then(r => {
+                    const fav = r.playlist;
+                    commit('setting', { key: 'likePlayList', payload: fav })
+                    commit('player/setFav', fav.tracks.map(x => x.id), { root: true })
+                })
+
+                // fav.
+
                 // 获取用户收藏的歌单
                 commit('setting', { key: 'favoritePlaylist', payload: playlist.filter(i => i.userId != state.profile.userId && i.specialType == 0) })
             })
