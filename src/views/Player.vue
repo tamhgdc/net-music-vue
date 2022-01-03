@@ -1,5 +1,5 @@
 <template>
-  <div :class="isPlay ? 'player start' : 'player stop'">
+  <div :class="playState ? 'player start' : 'player stop'">
     <div class="bg" ref="bg"></div>
     <div>
       <van-nav-bar
@@ -27,23 +27,16 @@
     <div ref="lrcWrap" :currIndex="currIndex" class="lyric">
       <p v-for="(t, i) in lrc.text" :key="i" v-html="t"></p>
     </div>
-    <audio
-      ref="s_player"
-      class="s-song"
-      :src="mp3url"
-      autoplay
-      controls
-    ></audio>
+    <!-- <audio ref="s_player" class="s-song" :src="mp3url" autoplay></audio> -->
+    <PlayerMain :id="$route.params.id" />
   </div>
 </template>
 
 <script>
-import {
-  loadSongDetailAPI,
-  loadSongUrlAPI,
-  loadLyricAPI,
-} from "../service/song";
+import { mapState, mapMutations } from "vuex";
 import PlayerDisc from "../components/player/PlayerDisc.vue";
+import PlayerMain from "../components/player/PlayerMain.vue";
+import { loadSongDetailAPI, loadLyricAPI } from "../service/song";
 export default {
   data() {
     return {
@@ -53,93 +46,77 @@ export default {
       state: true,
       lrc: {},
       currIndex: 0,
-      timer: null,
-      isPlay: true,
     };
+  },
+  computed: {
+    ...mapState("player", ["myPlayer", "playState", "playlist", "currId"]),
+  },
+  watch: {
+    currId(v) {
+      if (v) {
+        loadSongDetailAPI(v).then((res) => {
+          console.log(res);
+          this.imgSrc = res.songs[0].al.picUrl;
+          this.n = res.songs[0].name;
+          this.$refs.bg.style.backgroundImage = `url(${this.imgSrc})`;
+        });
+        // 解析歌词
+        loadLyricAPI(v).then((lrcData) => {
+          console.log(lrcData);
+          // 加载歌词
+          if (!lrcData.lrc.lyric.match("纯音乐")) {
+            this.lrc = this.lyricParse(lrcData.lrc.lyric);
+            // 歌词翻译大于0 加载翻译歌词
+            if (lrcData.tlyric.lyric.length > 0) {
+              // console.log(lrcData.tlyric.lyric);
+              const tlrc = this.lyricParse(lrcData.tlyric.lyric);
+              // console.log(tlrc);
+              this.lrc.text = this.lrc.text.map((x, i) => {
+                const index = tlrc.time.indexOf(this.lrc.time[i]);
+                if (index != -1) {
+                  // console.log(x + "<br>" + tlrc.text[index]);
+                  x += "<br>" + tlrc.text[index];
+                }
+                return x;
+              });
+            }
+          }
+        });
+
+        /* 设置高亮 */
+        this.myPlayer.ontimeupdate = () => {
+          // console.log(this.$refs.s_player.currentTime);
+          // 歌词高亮
+          if (this.lrc.time && this.lrc.text && this.myPlayer.currentTime) {
+            const arr = [...this.lrc.time].map((x) =>
+              Math.abs(x - this.myPlayer.currentTime)
+            );
+            const index = arr.indexOf(Math.min(...arr));
+            // console.log(arr, index);
+            if (index - 1 >= 0) {
+              // console.log(this.$refs);
+              this.$refs.lrcWrap.scrollTop =
+                this.$refs.lrcWrap.children[index - 1].offsetTop;
+              this.$refs.lrcWrap.children[index - 1].style.color = "black";
+              this.$refs.lrcWrap.children[index].style.color = "red";
+              this.currIndex = index;
+            }
+          }
+          if (this.myPlayer.currentTime == this.myPlayer.duration) {
+            this.next();
+          }
+        };
+      }
+    },
   },
   components: {
     PlayerDisc,
+    PlayerMain,
   },
-  async created() {
-    clearInterval(this.timer);
-    this.n = this.$route.params.n;
-
-    await loadSongDetailAPI(this.$route.params.id).then((res) => {
-      this.imgSrc = res.songs[0].al.picUrl;
-    });
-    // console.log(this.$route.params.id);
-    const res = await loadSongUrlAPI(this.$route.params.id);
-
-    // console.log(res);
-    this.mp3url = res.data[0].url;
-
-    // 解析歌词
-    await loadLyricAPI(this.$route.params.id).then((lrcData) => {
-      // console.log(lrcData);
-      // 加载歌词
-      if (!lrcData.lrc.lyric.match("纯音乐")) {
-        this.lrc = this.lyricParse(lrcData.lrc.lyric);
-        // 歌词翻译大于0 加载翻译歌词
-        if (lrcData.tlyric.lyric.length > 0) {
-          // console.log(lrcData.tlyric.lyric);
-          const tlrc = this.lyricParse(lrcData.tlyric.lyric);
-          // console.log(tlrc);
-          this.lrc.text = this.lrc.text.map((x, i) => {
-            const index = tlrc.time.indexOf(this.lrc.time[i]);
-
-            if (index != -1) {
-              // console.log(x + "<br>" + tlrc.text[index]);
-              x += "<br>" + tlrc.text[index];
-            }
-            return x;
-          });
-        }
-      }
-    });
-    this.$refs.bg.style.backgroundImage = `url(${this.imgSrc})`;
-  },
-  mounted() {
-    this.$nextTick(() => {
-      // 歌词高亮
-      if (this.lrc.time) {
-        this.timer = setInterval(() => {
-          const arr = [...this.lrc.time].map((x) =>
-            Math.abs(x - this.$refs.s_player.currentTime)
-          );
-          const index = arr.indexOf(Math.min(...arr));
-          // console.log(arr, index);
-          if (index - 1 >= 0) {
-            // console.log(this.$refs);
-            this.$refs.lrcWrap.scrollTop =
-              this.$refs.lrcWrap.children[index - 1].offsetTop;
-            this.$refs.lrcWrap.children[index - 1].style.color = "black";
-            this.$refs.lrcWrap.children[index].style.color = "red";
-            this.currIndex = index;
-          }
-
-          if (this.$refs.s_player.paused) {
-            this.stopPlay();
-          }
-          if (!this.$refs.s_player.paused) {
-            this.startPlay();
-          }
-        }, 2000);
-      }
-    });
-  },
-  updated() {},
   beforeDestroy() {
-    clearInterval(this.timer);
+    this.myPlayer.ontimeupdate = null;
   },
   methods: {
-    startPlay() {
-      this.isPlay = true;
-      this.$refs.s_player.play();
-    },
-    stopPlay() {
-      this.isPlay = false;
-      this.$refs.s_player.pause();
-    },
     /**
      * 歌词解析
      */
@@ -164,6 +141,7 @@ export default {
       this.$router.go(-1);
     },
     onClickRight() {},
+    ...mapMutations("player", ["next"]),
   },
 };
 </script>
@@ -182,14 +160,17 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f1f1f1;
+  background-color: #313131;
+  overflow: hidden;
   .bg {
-    width: 110vw;
-    height: 110vh;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
     position: absolute;
-    left: -5vw;
-    top: -5vh;
+    left: 0;
+    top: 0;
     z-index: 0;
+    background-color: #313131;
     background-size: cover;
     background-position: center;
     filter: blur(10px);

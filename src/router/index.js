@@ -59,6 +59,7 @@ const routes = [{
         component: () => import('../views/Player.vue'),
         meta: {
             isNavShow: false,
+            keepAlive: false,
         }
     }
 
