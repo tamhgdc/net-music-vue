@@ -50,9 +50,6 @@ export default {
     onClickLeft() {
       this.$router.go(-1);
     },
-    onSubmit(values) {
-      console.log("submit", values);
-    },
   },
   watch: {
     active(v) {

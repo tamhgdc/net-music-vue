@@ -10,6 +10,18 @@ const routes = [{
         component: Home,
         meta: {
             isNavShow: true,
+            isTopShow: true,
+            keepAlive: true,
+        }
+    },
+    {
+        path: '/Mine',
+        name: 'Mine',
+        component: () => import('../views/Mine.vue'),
+        meta: {
+            isNavShow: true,
+            isTopShow: true,
+            keepAlive: true,
         }
     },
     {
@@ -38,10 +50,11 @@ const routes = [{
         component: () => import('../views/Login.vue'),
         meta: {
             isNavShow: false,
+            isTopShow: false,
         }
     },
     {
-        path: '/player/:id',
+        path: '/player/:id/:n',
         name: 'Player',
         component: () => import('../views/Player.vue'),
         meta: {

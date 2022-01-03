@@ -24,7 +24,7 @@
             height="10vw"
             :src="
               isLogin
-                ? this.$store.state.userProfile.avatarUrl
+                ? profile.avatarUrl
                 : 'https://img01.yzcdn.cn/vant/cat.jpeg'
             "
           >
@@ -67,39 +67,35 @@
 </template>
 
 <script>
-import { logoutAPI } from "../../service/user";
+import { mapActions, mapState } from "vuex";
 import { Toast } from "vant";
+
 export default {
   data() {
     return {
       newMsgCount: 0,
       title: "立即登录",
-      isLogin: false,
       show: false,
     };
-  },
-  updated() {
-    console.log("刷新");
-    if (JSON.stringify(this.$store.state.userProfile) != "{}") {
-      this.isLogin = true;
-      this.title = this.$store.state.userProfile.nickname;
-      this.newMsgCount = this.$store.state.userPrivateMsg.newMsgCount;
-    }
   },
   methods: {
     showPopup() {
       this.show = true;
     },
     logout() {
-      logoutAPI().then((res) => {
-        console.log(res);
+      this.logoutAction().then(() => {
         Toast.success("退出成功");
-        this.$store.state.userProfile = null;
-        this.$store.state.userPrivateMsg = null;
         this.title = "立即登录";
-        this.isLogin = false;
       });
     },
+    ...mapActions("user", { logoutAction: "logout" }),
+  },
+  updated() {
+    this.title = this.isLogin ? this.profile.nickname : "立即登录";
+    this.newMsgCount = this.isLogin ? this.privateMsg.newMsgCount : 0;
+  },
+  computed: {
+    ...mapState("user", ["profile", "privateMsg", "isLogin"]),
   },
 };
 </script>

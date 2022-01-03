@@ -8,7 +8,7 @@
 
 <script>
 import SidePopup from "./SidePopup.vue";
-import SearchBox from "../SearchBox.vue";
+import SearchBox from "./SearchBox.vue";
 
 export default {
   data() {

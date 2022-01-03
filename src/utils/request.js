@@ -33,14 +33,15 @@ instance.interceptors.response.use(
     }
 );
 
-export function get(url) {
-    if (Array.isArray(url)) {
-        console.log(url)
-        return axios.all(url);
+export function get(url, params) {
+    if (params && Array.isArray(Object.values(params)[0])) {
+        return Promise.all(Object.values(params)[0].map((ids) => get(url, { ids }).catch(() => 'error')))
     } else {
-        return instance.get(arguments[1] ? url + encodeURIComponent(arguments[1]) : url);
+        return instance.get(url, { params: params });
     }
 }
+
+
 
 export function post(url, data) {
     // 参数一 表示地址

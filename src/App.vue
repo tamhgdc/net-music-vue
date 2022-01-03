@@ -1,7 +1,11 @@
 <template>
   <div id="app">
+    <Top v-show="$route.meta.isTopShow"></Top>
     <!-- 路由视图 -->
-    <router-view />
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive" />
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" />
     <!-- 底部导航 -->
     <van-tabbar
       class="nav"
@@ -9,32 +13,41 @@
       active-color="#ee0a24"
       inactive-color="#000"
       v-show="$route.meta.isNavShow"
+      route
     >
-      <van-tabbar-item v-for="(v, k) in icons" :key="k">
+      <van-tabbar-item
+        v-for="link in links"
+        :key="link.title"
+        :to="{ name: link.name }"
+      >
         <van-icon
           class="iconfont"
           slot="icon"
           class-prefix="icon"
-          :name="v"
+          :name="link.icon"
         ></van-icon>
-        <span>{{ k }}</span>
+        <span>{{ link.title }}</span>
       </van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 <script>
+import Top from "./components/Top.vue";
 export default {
   data() {
     return {
       active: 0,
-      icons: {
-        发现: "wyy",
-        播客: "guangbo",
-        我的: "yinleyinpin",
-        关注: "yonghubangding-copy",
-        云村: "luntan",
-      },
+      links: [
+        { name: "Home", title: "发现", icon: "wyy" },
+        { name: "", title: "播客", icon: "guangbo" },
+        { name: "Mine", title: "我的", icon: "yinleyinpin" },
+        { name: "", title: "关注", icon: "yonghubangding-copy" },
+        { name: "", title: "云村", icon: "luntan" },
+      ],
     };
+  },
+  components: {
+    Top,
   },
 };
 </script>
@@ -71,11 +84,15 @@ a {
   background-color: #f5f5f5;
   width: 100%;
   height: 100%;
-  div:nth-of-type(1) {
-    height: 90%;
+  display: flex;
+  flex-direction: column;
+  div:nth-of-type(2) {
+    flex: 1;
+    overflow: auto;
   }
 }
 .nav {
+  position: static !important;
   height: 10%;
   i {
     font-size: 2rem;

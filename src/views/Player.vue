@@ -1,15 +1,29 @@
 <template>
   <div :class="isPlay ? 'player start' : 'player stop'">
-    <div class="needle"></div>
-    <h2 class="s-name">{{ n }}</h2>
-    <div class="img-wrap">
-      <img
-        :class="state ? 's-img startRotate' : 's-img stop'"
-        :src="imgSrc + '?param=200y200'"
-        alt=""
-      />
-      <div class="wrap"></div>
+    <div class="bg" ref="bg"></div>
+    <div>
+      <van-nav-bar
+        left-text="返回"
+        left-arrow
+        @click-left="onClickLeft"
+        @click-right="onClickRight"
+      >
+        <template #right>
+          <van-icon name="share-o" size="18" />
+        </template>
+        <template #title>
+          <van-notice-bar
+            color="white"
+            background="#00000000"
+            speed="30"
+            :text="n"
+          />
+        </template>
+      </van-nav-bar>
     </div>
+
+    <div class="needle"></div>
+    <PlayerDisc :state="state" :imgSrc="imgSrc" :size="'60vw'" />
     <div ref="lrcWrap" :currIndex="currIndex" class="lyric">
       <p v-for="(t, i) in lrc.text" :key="i" v-html="t"></p>
     </div>
@@ -29,6 +43,7 @@ import {
   loadSongUrlAPI,
   loadLyricAPI,
 } from "../service/song";
+import PlayerDisc from "../components/player/PlayerDisc.vue";
 export default {
   data() {
     return {
@@ -41,6 +56,9 @@ export default {
       timer: null,
       isPlay: true,
     };
+  },
+  components: {
+    PlayerDisc,
   },
   async created() {
     clearInterval(this.timer);
@@ -59,49 +77,54 @@ export default {
     await loadLyricAPI(this.$route.params.id).then((lrcData) => {
       // console.log(lrcData);
       // 加载歌词
-      this.lrc = this.lyricParse(lrcData.lrc.lyric);
-      // 歌词翻译大于0 加载翻译歌词
-      if (lrcData.tlyric.length > 0) {
-        // console.log(lrcData.tlyric.lyric);
-        const tlrc = this.lyricParse(lrcData.tlyric.lyric);
-        // console.log(tlrc);
-        this.lrc.text = this.lrc.text.map((x, i) => {
-          const index = tlrc.time.indexOf(this.lrc.time[i]);
+      if (!lrcData.lrc.lyric.match("纯音乐")) {
+        this.lrc = this.lyricParse(lrcData.lrc.lyric);
+        // 歌词翻译大于0 加载翻译歌词
+        if (lrcData.tlyric.lyric.length > 0) {
+          // console.log(lrcData.tlyric.lyric);
+          const tlrc = this.lyricParse(lrcData.tlyric.lyric);
+          // console.log(tlrc);
+          this.lrc.text = this.lrc.text.map((x, i) => {
+            const index = tlrc.time.indexOf(this.lrc.time[i]);
 
-          if (index != -1) {
-            console.log(x + "<br>" + tlrc.text[index]);
-            x += "<br>" + tlrc.text[index];
-          }
-          return x;
-        });
+            if (index != -1) {
+              // console.log(x + "<br>" + tlrc.text[index]);
+              x += "<br>" + tlrc.text[index];
+            }
+            return x;
+          });
+        }
       }
     });
+    this.$refs.bg.style.backgroundImage = `url(${this.imgSrc})`;
   },
   mounted() {
     this.$nextTick(() => {
       // 歌词高亮
-      this.timer = setInterval(() => {
-        const arr = [...this.lrc.time].map((x) =>
-          Math.abs(x - this.$refs.s_player.currentTime)
-        );
-        const index = arr.indexOf(Math.min(...arr));
-        // console.log(arr, index);
-        if (index - 1 >= 0) {
-          // console.log(this.$refs);
-          this.$refs.lrcWrap.scrollTop =
-            this.$refs.lrcWrap.children[index - 1].offsetTop;
-          this.$refs.lrcWrap.children[index - 1].style.color = "black";
-          this.$refs.lrcWrap.children[index].style.color = "red";
-          this.currIndex = index;
-        }
+      if (this.lrc.time) {
+        this.timer = setInterval(() => {
+          const arr = [...this.lrc.time].map((x) =>
+            Math.abs(x - this.$refs.s_player.currentTime)
+          );
+          const index = arr.indexOf(Math.min(...arr));
+          // console.log(arr, index);
+          if (index - 1 >= 0) {
+            // console.log(this.$refs);
+            this.$refs.lrcWrap.scrollTop =
+              this.$refs.lrcWrap.children[index - 1].offsetTop;
+            this.$refs.lrcWrap.children[index - 1].style.color = "black";
+            this.$refs.lrcWrap.children[index].style.color = "red";
+            this.currIndex = index;
+          }
 
-        if (this.$refs.s_player.paused) {
-          this.stopPlay();
-        }
-        if (!this.$refs.s_player.paused) {
-          this.startPlay();
-        }
-      }, 2000);
+          if (this.$refs.s_player.paused) {
+            this.stopPlay();
+          }
+          if (!this.$refs.s_player.paused) {
+            this.startPlay();
+          }
+        }, 2000);
+      }
     });
   },
   updated() {},
@@ -137,10 +160,21 @@ export default {
         { time: [], text: [] }
       );
     },
+    onClickLeft() {
+      this.$router.go(-1);
+    },
+    onClickRight() {},
   },
 };
 </script>
 
+<style lang="less">
+.player {
+  .van-notice-bar__wrap {
+    justify-content: center;
+  }
+}
+</style>
 <style lang="less" scoped>
 .player {
   width: 100vw;
@@ -148,8 +182,30 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  background-color: #1f1f1f;
+  background-color: #f1f1f1;
+  .bg {
+    width: 110vw;
+    height: 110vh;
+    position: absolute;
+    left: -5vw;
+    top: -5vh;
+    z-index: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+  }
+
+  > div:nth-of-type(2) {
+    width: 100vw;
+
+    .van-nav-bar {
+      background-color: transparent;
+    }
+    .van-notice-bar {
+      align-self: center !important;
+      width: 50vw;
+    }
+  }
   &.start {
     .needle {
       transform: rotateZ(0deg);
@@ -172,62 +228,23 @@ export default {
     background: url("../assets/needle-ab.png") no-repeat;
     background-size: contain;
     position: fixed;
-    top: 3vw;
+    top: 14vw;
     right: 32vw;
     z-index: 2;
     transition: transform 1s;
     transform-origin: left top;
   }
-
   .img-wrap {
-    width: 60vw;
-    height: 60vw;
-    position: relative;
-    animation-name: rotateImg;
-    animation-duration: 10s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .wrap {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 60vw;
-      height: 60vw;
-      border-radius: 60vw;
-      background: url("../assets/disc.png") center;
-      background-size: contain;
-    }
-    .s-img {
-      width: 41vw;
-      height: 41vw;
-      border-radius: 40vw;
-    }
-
-    @keyframes rotateImg {
-      from {
-        transform: rotateZ(0);
-      }
-      to {
-        transform: rotateZ(360deg);
-      }
-    }
+    top: 35vw;
   }
-  .s-name {
-    margin: 5vw 0;
-    color: #cfcfcf;
-    z-index: 10;
-    font-size: 10vw;
-  }
-
   .lyric {
-    margin-top: 5vw;
+    position: absolute;
+    top: 85vw;
     height: 35vw;
     overflow: auto;
     position: relative;
     p {
+      text-align: center;
       padding: 2vw 0;
       font-size: 4vw;
     }

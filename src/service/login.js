@@ -29,8 +29,11 @@ export const loginByEmailAPI = (params) => post("/login", params);
  */
 export const getQrCodeAPI = async () => {
     const key = await get('/login/qr/key')
-    return get(`/login/qr/create?key=${key.unikey}&qrimg=true"`)
-};
+    return get(`/login/qr/create`, {
+        key: key.unikey,
+        qrimg: true,
+    });
+}
 
 /**
  * @description: 检查二维码状态
@@ -39,7 +42,7 @@ export const getQrCodeAPI = async () => {
  * 800 为二维码过期,801 为等待扫码,802 为待确认,803 为授权登录成功(803 状态码下会返回 cookies)
  */
 export const checkQrCodeAPI = (key) => {
-    return get('localhost:3000/login/qr/check?key=' + key)
+    return get('localhost:3000/login/qr/check', { key })
 };
 
 /**
