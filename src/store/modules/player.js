@@ -6,9 +6,10 @@ function initState() {
         myPlayer: new Audio(),
         playlist: [],
         currIndex: 0,
-        playState: true,
+        playState: false,
         currTime: '00:00',
         currId: 0,
+        curr: {},
         duration: '00:00',
         percent: 0,
         favList: [],
@@ -41,7 +42,20 @@ export default {
             if (song.url == null) return
 
             commit('settingUrl', song)
-        }
+        },
+        /**
+         * 刷新播放时间
+         * @param {*} state 
+         */
+        updateTime({ commit, state }) {
+            state.duration = state.myPlayer.duration
+            state.currTime = state.myPlayer.currentTime
+
+            if (state.myPlayer.duration == state.myPlayer.currentTime) {
+                commit('next')
+            }
+            commit("setTime", { d: state.myPlayer.duration, c: state.myPlayer.currentTime })
+        },
     },
 
     mutations: {
@@ -71,6 +85,7 @@ export default {
             state.myPlayer.src = state.playlist[0].url
             state.currId = state.playlist[0].id
             state.myPlayer.autoplay = true
+            state.curr = state.playlist[0];
             state.playState = true
         },
         /**
@@ -97,6 +112,7 @@ export default {
             state.currIndex = state.currIndex + 1 >= state.playlist.length ? 0 : state.currIndex + 1
             state.myPlayer.src = state.playlist[state.currIndex].url
             state.currId = state.playlist[state.currIndex].id
+            state.curr = state.playlist[state.currIndex]
             state.playState = true
         },
         /**
@@ -107,15 +123,16 @@ export default {
             state.currIndex = state.currIndex - 1 < 0 ? state.playlist.length - 1 : state.currIndex - 1
             state.myPlayer.src = state.playlist[state.currIndex].url
             state.currId = state.playlist[state.currIndex].id
+            state.curr = state.playlist[state.currIndex]
             state.playState = true
         },
         /**
          * 刷新播放时间
          * @param {*} state 
          */
-        updateTime(state) {
-            state.duration = state.myPlayer.duration
-            state.currTime = state.myPlayer.currentTime
+        setTime(state, payload) {
+            state.duration = payload.d
+            state.currTime = payload.c
             state.percent = state.myPlayer.currentTime / state.myPlayer.duration * 100
         },
         /**

@@ -54,12 +54,12 @@ const routes = [{
         }
     },
     {
-        path: '/player/:id/:n',
+        path: '/player',
         name: 'Player',
         component: () => import('../views/Player.vue'),
         meta: {
             isNavShow: false,
-            keepAlive: false,
+            keepAlive: true,
         }
     }
 

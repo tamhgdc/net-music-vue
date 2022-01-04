@@ -1,6 +1,10 @@
 <template>
   <div :class="playState ? 'player start' : 'player stop'">
-    <div class="bg" ref="bg"></div>
+    <van-image class="bg" ref="bg" :src="this.imgSrc">
+      <template v-slot:loading>
+        <div class="loading"></div>
+      </template>
+    </van-image>
     <div>
       <van-nav-bar
         left-text="返回"
@@ -33,7 +37,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import { loadSongDetailAPI, loadLyricAPI } from "../service/song";
 import PlayerDisc from "../components/player/PlayerDisc.vue";
 import PlayerMain from "../components/player/PlayerMain.vue";
@@ -55,14 +59,13 @@ export default {
   watch: {
     currId(v) {
       if (v) {
-        loadSongDetailAPI(v).then((res) => {
+        loadSongDetailAPI(this.currId).then((res) => {
           // console.log(res);
           this.imgSrc = res.songs[0].al.picUrl;
           this.n = res.songs[0].name;
-          this.$refs.bg.style.backgroundImage = `url(${this.imgSrc})`;
         });
         // 解析歌词
-        loadLyricAPI(v).then((lrcData) => {
+        loadLyricAPI(this.currId).then((lrcData) => {
           // console.log(lrcData);
           // 加载歌词
           if (!lrcData.lrc.lyric.match("纯音乐")) {
@@ -104,9 +107,6 @@ export default {
               this.currIndex = index;
             }
           }
-          if (this.myPlayer.currentTime == this.myPlayer.duration) {
-            this.next();
-          }
         };
       }
     },
@@ -114,9 +114,6 @@ export default {
   components: {
     PlayerDisc,
     PlayerMain,
-  },
-  beforeDestroy() {
-    this.myPlayer.ontimeupdate = null;
   },
   methods: {
     /**
@@ -143,7 +140,8 @@ export default {
       this.$router.go(-1);
     },
     onClickRight() {},
-    ...mapMutations("player", ["next", "updateTime"]),
+    ...mapMutations("player", ["next"]),
+    ...mapActions("player", ["updateTime"]),
   },
 };
 </script>
@@ -176,6 +174,11 @@ export default {
     background-size: cover;
     background-position: center;
     filter: blur(5vw);
+    .loading {
+      width: 100%;
+      height: 100%;
+      background-color: #313131;
+    }
   }
 
   > div:nth-of-type(2) {

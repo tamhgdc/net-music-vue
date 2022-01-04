@@ -6,11 +6,19 @@
       width: size,
     }"
   >
-    <img
-      :class="state ? 's-img startRotate' : 's-img stop'"
+    <img />
+    <van-image
+      :class="playState ? 's-img startRotate' : 's-img stop'"
       :src="imgSrc + '?param=200y200'"
       alt=""
-    />
+    >
+      <template v-slot:loading>
+        <div class="loading"></div>
+      </template>
+      <template v-slot:error>
+        <div class="loading"></div>
+      </template>
+    </van-image>
     <div
       class="wrap"
       :style="{
@@ -23,8 +31,12 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   props: ["state", "imgSrc", "size"],
+  computed: {
+    ...mapState("player", ["playState"]),
+  },
 };
 </script>
 
@@ -50,7 +62,12 @@ export default {
     height: 67%;
     border-radius: 67%;
   }
-
+  .loading {
+    width: 100%;
+    height: 100%;
+    background: url("../../assets/disc_default.png");
+    background-size: contain;
+  }
   @keyframes rotateImg {
     from {
       transform: rotateZ(0);

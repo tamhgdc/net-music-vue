@@ -50,7 +50,19 @@ export default {
   watch: {},
 };
 </script>
-
+<style lang="less">
+.content {
+  .van-cell__title {
+    span {
+      display: inline-block;
+      width: 60%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+</style>
 <style lang="less" scoped>
 .content {
   min-height: 50vw;

@@ -133,3 +133,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - 评论
 - 首页其他模块
 - 更多功能。。。
+
+### 2022 年 1 月 4 日
+
+完成
+
+- 全局播放器功能优化
+- 迷你播放器组件

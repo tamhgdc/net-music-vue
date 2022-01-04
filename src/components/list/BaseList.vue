@@ -8,15 +8,7 @@
       @load="onLoad"
     >
       <van-cell
-        @click="
-          $router.push({
-            name: 'Player',
-            params: {
-              id: item.id,
-              n:item.name,
-            },
-          })
-        "
+        @click="play(item)"
         v-for="item in list"
         :key="item.id"
         :title="item.name"
@@ -27,6 +19,7 @@
 
 <script>
 import { loadPlaylistByIdAPI } from "../../service/playlist";
+import { mapActions } from "vuex";
 export default {
   props: ["id"],
   data() {
@@ -41,6 +34,17 @@ export default {
   },
   async created() {},
   methods: {
+    ...mapActions("player", ["playById"]),
+    play(item) {
+      this.playById(item.id);
+      this.$router.push({
+        name: "Player",
+        params: {
+          id: item.id,
+          n: item.name,
+        },
+      });
+    },
     async onLoad() {
       if (this.playlist.tracks) {
         console.log("加载");
