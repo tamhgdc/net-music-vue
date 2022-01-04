@@ -88,8 +88,10 @@ export default {
   },
   filters: {
     format(v) {
-      const m = String(v < 60 ? 0 : parseInt(v / 60)).padStart(2, "0");
-      const s = String(parseInt(v - m * 60)).padStart(2, "0");
+      const m = v
+        ? String(v < 60 ? 0 : parseInt(v / 60)).padStart(2, "0")
+        : "00";
+      const s = v ? String(parseInt(v - m * 60)).padStart(2, "0") : "00";
       return m + ":" + s;
     },
   },

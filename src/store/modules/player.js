@@ -66,10 +66,10 @@ export default {
                 state.playlist.splice(i, 1)
             }
             /* 将歌曲push进播放列表 */
-            state.playlist.push(payload)
-            state.currIndex = state.playlist.length - 1
-            state.myPlayer.src = state.playlist[state.playlist.length - 1].url
-            state.currId = state.playlist[state.playlist.length - 1].id
+            state.playlist.unshift(payload)
+            state.currIndex = 0
+            state.myPlayer.src = state.playlist[0].url
+            state.currId = state.playlist[0].id
             state.myPlayer.autoplay = true
             state.playState = true
         },
