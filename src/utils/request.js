@@ -33,11 +33,24 @@ instance.interceptors.response.use(
     }
 );
 
-export function get(url, params) {
-    if (params && Array.isArray(Object.values(params)[0])) {
-        return Promise.all(Object.values(params)[0].map((ids) => get(url, { ids }).catch(() => 'error')))
+/**
+ * get请求
+ * @param {*} url 地址
+ * @param {*} params 参数
+ * @param {*} all 是否多并发
+ * @param {*} key 参数key
+ * @returns 
+ */
+export function get(url, params, all = false, key = '') {
+    /* 处理高并发请求 */
+    if (all) {
+        return Promise.all(params.reduce((p, c) => {
+            const obj = {};
+            obj[key] = c[key]
+            return p.concat(get(url, obj).catch(() => 'error'))
+        }, []))
     } else {
-        return instance.get(url, { params: params });
+        return instance.get(url, { params });
     }
 }
 

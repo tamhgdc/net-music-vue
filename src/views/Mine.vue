@@ -1,7 +1,7 @@
 <template>
   <div class="mine">
     <MineBaseInfo />
-    <MineOparetePanel />
+    <MineOperatePanel />
     <MineFavoriteMusic />
     <MinePlayListPanel />
   </div>
@@ -9,13 +9,13 @@
 
 <script>
 import MineBaseInfo from "../components/mine/MineBaseInfo.vue";
-import MineOparetePanel from "../components/mine/MineOparetePanel.vue";
+import MineOperatePanel from "../components/mine/MineOperatePanel.vue";
 import MineFavoriteMusic from "../components/mine/MineFavoriteMusic.vue";
 import MinePlayListPanel from "../components/mine/MinePlayListPanel.vue";
 export default {
   components: {
     MineBaseInfo,
-    MineOparetePanel,
+    MineOperatePanel,
     MineFavoriteMusic,
     MinePlayListPanel,
   },

@@ -7,6 +7,7 @@
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive" />
     <!-- 底部导航 -->
+    <MiniPlayer v-show="$route.meta.isNavShow" />
     <van-tabbar
       class="nav"
       v-model="active"
@@ -33,6 +34,7 @@
 </template>
 <script>
 import Top from "./components/Top.vue";
+import MiniPlayer from "./components/MiniPlayer.vue";
 export default {
   data() {
     return {
@@ -48,6 +50,7 @@ export default {
   },
   components: {
     Top,
+    MiniPlayer,
   },
 };
 </script>

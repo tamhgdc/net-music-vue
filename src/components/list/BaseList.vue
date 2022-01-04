@@ -6,17 +6,10 @@
       finished-text="没有更多了"
       ref="listWrap"
       @load="onLoad"
+      offset="10"
     >
       <van-cell
-        @click="
-          $router.push({
-            name: 'Player',
-            params: {
-              id: item.id,
-              n:item.name,
-            },
-          })
-        "
+        @click="play(item)"
         v-for="item in list"
         :key="item.id"
         :title="item.name"
@@ -26,43 +19,52 @@
 </template>
 
 <script>
-import { loadPlaylistByIdAPI } from "../../service/playlist";
+import { loadPlaylistAllSongByIdAPI } from "../../service/playlist";
+import { mapActions } from "vuex";
 export default {
   props: ["id"],
   data() {
     return {
       list: [],
-      page: 1,
-      pageSize: 6,
-      playlist: {},
+      page: 0,
+      pageSize: 20,
+      playlist: [],
       loading: false,
       finished: false,
     };
   },
   async created() {},
   methods: {
-    async onLoad() {
-      if (this.playlist.tracks) {
-        console.log("加载");
-        const i = this.page * this.pageSize;
+    ...mapActions("player", ["playById"]),
+    play(item) {
+      this.playById(item.id);
+      this.$router.push({
+        name: "Player",
+        params: {
+          id: item.id,
+          n: item.name,
+        },
+      });
+    },
+    mounted() {
+      loadPlaylistAllSongByIdAPI(this.id).then((res) => {
+        this.list = res.songs;
+      });
+    },
+    onLoad() {
+      console.log("加载");
+      loadPlaylistAllSongByIdAPI(this.id).then((res) => {
+        console.log(this.finished, this.loading);
+        this.playlist = res.songs;
+        const i = this.page++ * this.pageSize;
         const curr = i + this.pageSize;
-        this.list.push(...this.playlist.tracks.slice(i, curr));
-
+        this.list.push(...this.playlist.slice(i, curr));
         this.loading = false;
-        this.page++;
-        if (this.page * this.pageSize >= this.playlist.tracks.length) {
+        if (this.page * this.pageSize >= this.playlist.length) {
           console.log("加载完了");
-          this.finished = true;
+          this.finished = false;
         }
-      } else {
-        console.log("初次加载");
-        await loadPlaylistByIdAPI(this.id).then((res) => {
-          this.playlist = res.playlist;
-          this.list.push(...this.playlist.tracks.slice(0, this.pageSize));
-          this.loading = false;
-          this.$emit("listInfo", this.playlist);
-        });
-      }
+      });
     },
   },
 };
