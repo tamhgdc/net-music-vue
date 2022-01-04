@@ -14,11 +14,18 @@ export const loadPlaylistAPI = () => get('/personalized')
 export const loadPlaylistAndLimitAPI = (limit = 6) => get('/personalized', { limit })
 
 /**
- * 通过 ID 获取播放列表
+ * 通过 ID 歌单详情
  * @param {*} id 播放列表 ID
  * @returns 
  */
-export const loadPlaylistByIdAPI = (id) => get('/playlist/detail', { id })
+export const loadPlaylistDetailByIdAPI = (id) => get('/playlist/detail', { id })
+
+/**
+ * 通过 ID 获取歌单所有歌曲
+ * @param {*} id 
+ * @returns 
+ */
+export const loadPlaylistAllSongByIdAPI = (id) => get('/playlist/track/all', { id })
 
 /**
  * 获取每日推荐歌单（需登录）

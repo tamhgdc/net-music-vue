@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from "vuex";
-import { loadSongDetailAPI, loadLyricAPI } from "../service/song";
+import { mapState, mapActions } from "vuex";
+import { loadLyricAPI } from "../service/song";
 import PlayerDisc from "../components/player/PlayerDisc.vue";
 import PlayerMain from "../components/player/PlayerMain.vue";
 
@@ -54,21 +54,26 @@ export default {
     };
   },
   computed: {
-    ...mapState("player", ["myPlayer", "playState", "playlist", "currId"]),
+    ...mapState("player", ["myPlayer", "playState", "playlist", "curr"]),
   },
   watch: {
-    currId(v) {
+    curr(v) {
       if (v) {
-        loadSongDetailAPI(this.currId).then((res) => {
-          // console.log(res);
-          this.imgSrc = res.songs[0].al.picUrl;
-          this.n = res.songs[0].name;
-        });
+        this.imgSrc = v.detail.al.picUrl;
+        this.n = v.detail.name;
+        // loadSongDetailAPI(this.currId).then((res) => {
+        //   // console.log(res);
+        //   this.imgSrc = res.songs[0].al.picUrl;
+        //   this.n = res.songs[0].name;
+        // });
         // 解析歌词
-        loadLyricAPI(this.currId).then((lrcData) => {
+        loadLyricAPI(v.id).then((lrcData) => {
           // console.log(lrcData);
           // 加载歌词
-          if (!lrcData.lrc.lyric.match("纯音乐")) {
+          if (
+            !lrcData.lrc.lyric.match("纯音乐") &&
+            /\[\d{2}:\d{2}.(\d{3}|\d{2})\]/.test(lrcData.lrc.lyric)
+          ) {
             this.lrc = this.lyricParse(lrcData.lrc.lyric);
             // 歌词翻译大于0 加载翻译歌词
             if (lrcData.tlyric.lyric.length > 0) {
@@ -140,8 +145,7 @@ export default {
       this.$router.go(-1);
     },
     onClickRight() {},
-    ...mapMutations("player", ["next"]),
-    ...mapActions("player", ["updateTime"]),
+    ...mapActions("player", ["updateTime", "next"]),
   },
 };
 </script>
@@ -173,7 +177,7 @@ export default {
     background-color: #313131;
     background-size: cover;
     background-position: center;
-    filter: blur(5vw);
+    filter: blur(10vw);
     .loading {
       width: 100%;
       height: 100%;

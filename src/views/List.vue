@@ -1,13 +1,13 @@
 <template>
   <div class="playlist-wrap">
-    <van-image :src="list.coverImgUrl" class="list-header" ref="header">
+    <van-image :src="listDetail.coverImgUrl" class="list-header" ref="header">
       <template v-slot:loading>
         <van-loading type="spinner" size="20" />
       </template>
     </van-image>
     <ListTopNav></ListTopNav>
     <van-sticky offset-top="14vw">
-      <div>
+      <div @click="playAll()">
         <van-icon class="play" name="play-circle" />
         <span class="title">播放全部</span>
         <span class="count">({{ count }})</span>
@@ -17,39 +17,85 @@
         <van-icon name="passed" />
       </div>
     </van-sticky>
-    <component
-      @listInfo="listInfo"
-      :id="this.$route.params.id"
-      :is="currId"
-    ></component>
+    <van-cell
+      @click="play(item)"
+      v-for="item in playlist"
+      :key="item.id"
+      :title="item.name"
+    />
   </div>
 </template>
 
 <script>
+import {
+  loadPlaylistDetailByIdAPI,
+  loadPlaylistAllSongByIdAPI,
+} from "../service/playlist";
 import ListTopNav from "../components/list/ListTopNav";
-import BaseList from "../components/list/BaseList";
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
       currId: "BaseList",
-      list: {},
+      listDetail: {},
       count: 0,
       loaded: true,
+      list: [],
+      page: 0,
+      pageSize: 20,
+      playlist: [],
+      loading: false,
+      finished: false,
     };
   },
   created() {
     this.currId = this.$route.params.type;
+    loadPlaylistDetailByIdAPI(this.$route.params.id).then((res) => {
+      this.listDetail = res.playlist;
+      this.count = this.listDetail.trackIds.length;
+      this.loaded = false;
+    });
+    loadPlaylistAllSongByIdAPI(this.$route.params.id).then((res) => {
+      this.playlist = res.songs;
+    });
   },
+
   components: {
     ListTopNav,
-    BaseList,
   },
   methods: {
-    listInfo(v) {
-      this.list = v;
-      this.count = this.list.tracks.length;
-      this.loaded = false;
+    onLoad() {
+      console.log("加载");
+      loadPlaylistAllSongByIdAPI(this.$route.params.id).then((res) => {
+        console.log(this.finished, this.loading);
+        this.playlist = res.songs;
+        const i = this.page++ * this.pageSize;
+        const curr = i + this.pageSize;
+        this.list.push(...this.playlist.slice(i, curr));
+        this.loading = false;
+        if (this.page * this.pageSize >= this.playlist.length) {
+          console.log("加载完了");
+          this.finished = false;
+        }
+      });
     },
+    play(item) {
+      this.playById(item.id);
+      this.$router.push({
+        name: "Player",
+        params: {
+          id: item.id,
+          n: item.name,
+        },
+      });
+    },
+    playAll() {
+      this.playAllByPlaylistId(this.$route.params.id);
+      this.$router.push({
+        name: "Player",
+      });
+    },
+    ...mapActions("player", ["playAllByPlaylistId", "playById"]),
   },
 };
 </script>

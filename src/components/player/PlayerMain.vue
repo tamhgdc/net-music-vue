@@ -16,7 +16,8 @@
         class="iconfont"
         slot="icon"
         class-prefix="icon"
-        name="liebiaoxunhuan"
+        @click="changeMode"
+        :name="mode ? 'suijibofang-' : 'liebiaoxunhuan'"
       ></van-icon>
       <!-- 上一曲 -->
       <van-icon
@@ -61,20 +62,12 @@ import { mapMutations, mapGetters, mapActions, mapState } from "vuex";
 export default {
   props: ["id"],
   methods: {
-    ...mapMutations("player", [
-      "addUrl",
-      "settingUrl",
-      "play",
-      "pause",
-      "prev",
-      "next",
-    ]),
-
-    ...mapActions("player", ["playById"]),
+    ...mapMutations("player", ["addUrl", "settingUrl", "changeMode"]),
+    ...mapActions("player", ["playById", "play", "pause", "prev", "next"]),
   },
   computed: {
     ...mapGetters("player", ["currId"]),
-    ...mapState("player", ["playState", "duration", "currTime"]),
+    ...mapState("player", ["playState", "mode", "duration", "currTime"]),
   },
   watch: {},
   created() {},

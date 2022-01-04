@@ -18,13 +18,14 @@
         <div class="list">
           <van-cell
             :class="i == currIndex ? 'item curr' : 'item'"
-            :title="item.detail.name"
             v-for="(item, i) in playlist"
             :key="item.id"
           >
-            <!-- 使用 right-icon 插槽来自定义右侧图标 -->
+            <template #title>
+              <span @click="clickHandle(item.id)">{{ item.detail.name }}</span>
+            </template>
             <template #right-icon>
-              <van-icon name="close" />
+              <van-icon name="close" @click="removeById(item.id)" />
             </template>
           </van-cell>
         </div>
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   props: ["size"],
   data() {
@@ -46,6 +47,12 @@ export default {
   computed: {
     ...mapState("player", ["playlist", "currIndex"]),
     ...mapGetters("player", ['"currId"']),
+  },
+  methods: {
+    clickHandle(id) {
+      this.playById(id);
+    },
+    ...mapActions("player", ["playById", "removeById"]),
   },
   watch: {},
 };

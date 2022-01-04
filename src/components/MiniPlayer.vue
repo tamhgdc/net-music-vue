@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 import PlayerDisc from "./player/PlayerDisc.vue";
 import PlayerActionSheet from "./player/PlayerActionSheet.vue";
 export default {
@@ -59,19 +59,21 @@ export default {
       if (this.curr) {
         this.$router.push({
           name: "Player",
+          params: {
+            id: this.curr.id,
+            n: this.curr.name,
+          },
         });
       }
     },
     clickHandle() {
       if (this.playState) {
-        console.log("点击 暂停");
         this.pause();
       } else {
-        console.log("点击 播放");
         this.play();
       }
     },
-    ...mapMutations("player", ["play", "pause"]),
+    ...mapActions("player", ["play", "pause"]),
   },
   components: {
     PlayerDisc,

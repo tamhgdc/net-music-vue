@@ -1,17 +1,13 @@
 <template>
   <div
-    class="img-wrap"
+    :class="playState ? 'img-wrap start' : 'img-wrap stop'"
     :style="{
       height: size,
       width: size,
     }"
   >
     <img />
-    <van-image
-      :class="playState ? 's-img startRotate' : 's-img stop'"
-      :src="imgSrc + '?param=200y200'"
-      alt=""
-    >
+    <van-image class="s-img" :src="imgSrc + '?param=200y200'" alt="">
       <template v-slot:loading>
         <div class="loading"></div>
       </template>
@@ -41,15 +37,23 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.start {
+  animation-play-state: running;
+}
+.stop {
+  animation-play-state: paused;
+}
+
 .img-wrap {
-  position: absolute;
   animation-name: rotateImg;
   animation-duration: 10s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
+
   .wrap {
     position: absolute;
     left: 0;
