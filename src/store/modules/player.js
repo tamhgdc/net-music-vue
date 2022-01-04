@@ -27,7 +27,7 @@ export default {
             loadRecentlyPlayedSongsAPI().then(res => {
                 commit('setting', { key: 'recentlyPlayedSongs', payload: res.data.list })
                 loadSongUrlAPI(res.data.list[0].data.id).then(r => {
-                    commit('settingUrl', r[0].url)
+                    commit('addUrl', r[0].url)
                 })
             })
         },
@@ -45,13 +45,13 @@ export default {
             })
             if (song.url == null) return
 
-            commit('settingUrl', song)
+            commit('addUrl', song)
         },
         /**
          * 播放全部
          * @param {*} payload 歌单ID
          */
-        playAllByPlaylistId({ state, commit }, payload) {
+        playAllByPlaylistId({ state, commit, dispatch }, payload) {
             /*
                 方案一： 多并发一次行加载所有歌曲信息mp3地址
                     缺点：慢，而且由于超时问题，400首歌曲只能获取到一半
@@ -74,10 +74,12 @@ export default {
             //             return p
             //     }, [])
             //     // console.log(songs)
-            //     commit('settingUrls', songs.reverse())
+            //     commit('addUrls', songs.reverse())
             // })
             /*
-                方案二：抽离获取音乐地址的功能，播放时候判断，url是否存在
+                方案二：抽离获取音乐地址的功能，播放时候判断，url是否存在，存在播放，否则先获取再播放
+                    优点：一劳永逸
+                    缺点：来回调绕晕了，一会commit 一会dispatch
             */
             loadPlaylistAllSongByIdAPI(payload).then(async res => {
                 // console.log(state, commit)
@@ -95,31 +97,20 @@ export default {
                         return p
                 }, [])
                 // console.log(songs)
-                commit('settingUrls', songs.reverse())
+                commit('addUrls', songs.reverse())
+                dispatch('playById', songs[0].id);
             })
         },
-        /**
-         * 
-         * @param {*} param0 
-         * @param {*} payload 
-         */
-        getUrl({ state, commit }) {
-            loadSongUrlAPI(state.playlist[state.currIndex].id).then(res => {
-                commit('setUrl', res.data.url)
-            })
-        },
+
         /**
          * 刷新播放时间
          * @param {*} state 
          */
-        updateTime({ commit, state }) {
-            state.duration = state.myPlayer.duration
-            state.currTime = state.myPlayer.currentTime
-
+        updateTime({ commit, state, dispatch }) {
             if (state.myPlayer.duration == state.myPlayer.currentTime) {
-                commit('next')
+                dispatch('next')
             }
-            commit("setTime", { d: state.myPlayer.duration, c: state.myPlayer.currentTime })
+            commit("setting", { duration: state.myPlayer.duration, currTime: state.myPlayer.currentTime, percent: state.myPlayer.currentTime / state.myPlayer.duration * 100 })
         },
         /**
          * 通过ID删除播放列表歌曲
@@ -151,8 +142,9 @@ export default {
          * 播放列表下一曲
          * @param {*} state 
          */
-        next({ state, commit, dispatch }) {
-            const payload = {};
+        next({ state, dispatch }) {
+            const payload = {}
+            let currIndex = state.currIndex
             if (state.mode) {
                 // 随机播放模式 ? 排除当前播放歌曲
                 // state.currIndex = Math.floor(Math.random() * state.playlist.length)
@@ -162,37 +154,56 @@ export default {
                 // 获取该数组的随机元素
                 const target = arr[Math.floor(Math.random() * arr.length)]
                 // 获取随机元素位于原数组的位置
-                payload.currIndex = state.playlist.findIndex(x => x.id == target.id)
+                currIndex = state.playlist.findIndex(x => x.id == target.id)
 
             } else {
-                payload.currIndex = state.currIndex + 1 >= state.playlist.length ? 0 : state.currIndex + 1
+                currIndex = state.currIndex + 1 >= state.playlist.length ? 0 : state.currIndex + 1
             }
-            if (state.playlist[state.currIndex].url) {
-                commit('setPlayerUrl', state.playlist[state.currIndex].url)
-                payload.currId = state.playlist[state.currIndex].id
-                payload.curr = state.playlist[state.currIndex]
-                payload.playState = true
-            } else {
-                dispatch('getUrl', state.currIndex)
-            }
-
-            commit("setting", payload)
+            dispatch('operate', { currIndex, payload })
         },
         /**
          * 播放列表上一曲
          * @param {*} state 
          */
-        prev({ state, commit }) {
-            console.log(state.playlist, state.playlist[state.currIndex]);
+        prev({ state, dispatch }) {
             const currIndex = state.currIndex - 1 < 0 ? state.playlist.length - 1 : state.currIndex - 1
             const payload = {
                 currIndex,
-                currId: state.playlist[currIndex].id,
                 curr: state.playlist[currIndex],
                 playState: true,
             }
+            dispatch('operate', { currIndex, payload })
+        },
+        /**
+         * 上一曲下一曲操作
+         * @param {*} param0 
+         * @param {*} param1 
+         */
+        operate({ state, commit, dispatch }, { currIndex, payload }) {
+            // 判断当前播放的歌曲是否有播放地址
+            if (state.playlist[currIndex].url) {
+                // 若有，直接播放
+                commit('setPlayerUrl', {
+                    currIndex,
+                    url: state.playlist[currIndex].url
+                })
+            } else {
+                // 若无，调用 getUrl获取播放地址
+                dispatch('getUrl', currIndex)
+            }
+            // 绑定信息
             commit('setting', payload)
-            commit('setPlayerUrl', state.playlist[currIndex].url)
+        },
+        /**
+         * 获取歌曲url
+         * @param {*} param0 
+         * @param {*} payload 
+         */
+        getUrl({ state, commit }, payload) {
+            loadSongUrlAPI(state.playlist[payload].id).then(res => {
+                // 获取到歌曲url后 调setPlayerUrl切换播放歌曲
+                commit('setPlayerUrl', { currIndex: payload, url: res.data[0].url })
+            })
         },
 
     },
@@ -207,12 +218,12 @@ export default {
         setting(state, payload) {
             for (const key in payload) {
                 if (key == "playState") {
-                    if (state[key])
+                    if (payload[key])
                         state.myPlayer.play()
                     else
                         state.myPlayer.pause()
                 }
-                state[key] = payload
+                state[key] = payload[key]
             }
         },
         /**
@@ -220,19 +231,19 @@ export default {
          * @param {*} state 
          * @param {*} payload 
          */
-        settingUrl(state, payload) {
+        addUrl(state, payload) {
             /* 若歌曲已存在 则删除后重新添加 */
             const i = state.playlist.findIndex(x => x.id == payload.id)
-            if (i != -1) {
-                state.playlist.splice(i, 1)
+            if (i == -1) {
+                /* 将歌曲push进播放列表 */
+                state.playlist.unshift(payload)
+            } else {
+                state.playlist[i] = payload
             }
-            /* 将歌曲push进播放列表 */
-            state.playlist.unshift(payload)
-            state.currIndex = 0
-            state.myPlayer.src = state.playlist[0].url
-            state.currId = state.playlist[0].id
+            state.currIndex = i == -1 ? 0 : i
+            state.myPlayer.src = state.playlist[state.currIndex].url
+            state.curr = state.playlist[state.currIndex];
             state.myPlayer.autoplay = true
-            state.curr = state.playlist[0];
             state.playState = true
         },
         /**
@@ -240,29 +251,25 @@ export default {
          * @param {*} state 
          * @param {*} payload 
          */
-        settingUrls(state, payload) {
+        addUrls(state, payload) {
             console.log(payload);
             state.playlist = state.playlist.concat(payload)
             state.currIndex = 0
             state.myPlayer.src = state.playlist[0].url
-            state.currId = state.playlist[0].id
             state.myPlayer.autoplay = true
             state.curr = state.playlist[0];
             state.playState = true
         },
-
-        setPlayerUrl(state, payload) {
-            state.myPlayer.src = payload
-        },
-
         /**
-         * 刷新播放时间
+         * 设置播放器地址
          * @param {*} state 
+         * @param {*} payload 
          */
-        setTime(state, payload) {
-            state.duration = payload.d
-            state.currTime = payload.c
-            state.percent = state.myPlayer.currentTime / state.myPlayer.duration * 100
+        setPlayerUrl(state, { url, currIndex }) {
+            state.myPlayer.src = url
+            state.playlist[currIndex].url = url
+            state.curr = state.playlist[currIndex];
+            state.currIndex = currIndex
         },
         /**
          * 滚动条百分比设置播放进度

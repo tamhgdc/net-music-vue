@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   props: ["size"],
   data() {
@@ -46,7 +46,6 @@ export default {
   },
   computed: {
     ...mapState("player", ["playlist", "currIndex"]),
-    ...mapGetters("player", ['"currId"']),
   },
   methods: {
     clickHandle(id) {
