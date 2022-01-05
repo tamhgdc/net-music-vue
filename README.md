@@ -138,5 +138,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 完成
 
-- 全局播放器功能优化
+- 全局播放器功能优化(顺序/乱序)
 - 迷你播放器组件
+- 列表页播放全部
