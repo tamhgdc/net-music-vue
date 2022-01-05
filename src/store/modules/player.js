@@ -34,6 +34,7 @@ export default {
         async playById({ commit }, payload) {
             const song = { isFav: false };
             if (!payload) return
+            console.log(payload);
             /* 获取mp3链接 */
             await loadSongUrlAPI(payload).then(r => {
                 song.url = r.data[0].url
@@ -43,8 +44,6 @@ export default {
             await loadSongDetailAPI(payload).then(r => {
                 song.detail = r.songs[0]
             })
-            if (song.url == null) return
-
             commit('addUrl', song)
         },
         /**
@@ -80,6 +79,8 @@ export default {
                 方案二：抽离获取音乐地址的功能，播放时候判断，url是否存在，存在播放，否则先获取再播放
                     优点：一劳永逸
                     缺点：来回调绕晕了，一会commit 一会dispatch
+
+                    !!! noCopyrightRcmd !!! 大坑，无版权
             */
             loadPlaylistAllSongByIdAPI(payload).then(async res => {
                 // console.log(state, commit)
@@ -91,13 +92,14 @@ export default {
                     song.isFav = false
                     song.detail = res.songs[i]
                     song.id = res.songs[i].id
-                    if (state.playlist.findIndex(y => res.songs[i].id == y.id) == -1)
+                    if (res.songs[i].noCopyrightRcmd == null && state.playlist.findIndex(y => res.songs[i].id == y.id) == -1)
                         return p.concat(song)
                     else
                         return p
                 }, [])
                 // console.log(songs)
-                commit('addUrls', songs.reverse())
+                commit('addUrls', songs)
+
                 dispatch('playById', songs[0].id);
             })
         },
@@ -117,12 +119,16 @@ export default {
          * @param {*} param0 
          * @param {*} payload 
          */
-        removeById({ state, commit }, payload) {
+        removeById({ commit, dispatch }, payload) {
+
             // 获取要删除的索引位置
-            const i = state.playlist.findIndex(x => x.id == payload)
+
             // 如果要删除当前播放的歌曲，就先切换到下一曲然后删除
-            if (payload == state.currId) commit("next")
-            commit('delSongByIndex', i)
+            console.log('触发删除');
+
+            commit('delSongById', payload)
+            dispatch('next')
+
         },
         /**
          * 播放
@@ -143,7 +149,6 @@ export default {
          * @param {*} state 
          */
         next({ state, dispatch }) {
-            const payload = {}
             let currIndex = state.currIndex
             if (state.mode) {
                 // 随机播放模式 ? 排除当前播放歌曲
@@ -159,7 +164,11 @@ export default {
             } else {
                 currIndex = state.currIndex + 1 >= state.playlist.length ? 0 : state.currIndex + 1
             }
-            dispatch('operate', { currIndex, payload })
+            dispatch('operate', {
+                currIndex,
+                curr: state.playlist[currIndex],
+                playState: true,
+            })
         },
         /**
          * 播放列表上一曲
@@ -199,8 +208,8 @@ export default {
          * @param {*} param0 
          * @param {*} payload 
          */
-        getUrl({ state, commit }, payload) {
-            loadSongUrlAPI(state.playlist[payload].id).then(res => {
+        async getUrl({ state, commit }, payload) {
+            await loadSongUrlAPI(state.playlist[payload].id).then(res => {
                 // 获取到歌曲url后 调setPlayerUrl切换播放歌曲
                 commit('setPlayerUrl', { currIndex: payload, url: res.data[0].url })
             })
@@ -254,11 +263,11 @@ export default {
         addUrls(state, payload) {
             console.log(payload);
             state.playlist = state.playlist.concat(payload)
-            state.currIndex = 0
-            state.myPlayer.src = state.playlist[0].url
+            // state.currIndex = 0
+            // state.myPlayer.src = state.playlist[0].url
             state.myPlayer.autoplay = true
-            state.curr = state.playlist[0];
-            state.playState = true
+            // state.curr = state.playlist[0];
+            // state.playState = true
         },
         /**
          * 设置播放器地址
@@ -299,9 +308,10 @@ export default {
          * @param {*} state 
          * @param {*} payload 
          */
-        delSongByIndex(state, payload) {
+        delSongById(state, payload) {
             // 判断删除的是不是当前正在播放的
-            state.playlist.splice(payload, 1)
+            const i = state.playlist.findIndex(x => x.id == payload)
+            state.playlist.splice(i, 1)
         },
         /**
          * 切换播放模式
