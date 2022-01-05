@@ -61,13 +61,9 @@ export default {
       if (v) {
         this.imgSrc = v.detail.al.picUrl;
         this.n = v.detail.name;
-        // loadSongDetailAPI(this.currId).then((res) => {
-        //   // console.log(res);
-        //   this.imgSrc = res.songs[0].al.picUrl;
-        //   this.n = res.songs[0].name;
-        // });
+
         // 解析歌词
-        loadLyricAPI(v.id).then((lrcData) => {
+        loadLyricAPI(v.detail.id).then((lrcData) => {
           // console.log(lrcData);
           // 加载歌词
           if (

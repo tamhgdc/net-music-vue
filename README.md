@@ -141,3 +141,10 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - 全局播放器功能优化(顺序/乱序)
 - 迷你播放器组件
 - 列表页播放全部
+
+### 2022 年 1 月 5 日
+
+完成
+
+- 播放器功能完善
+- 列表页重构

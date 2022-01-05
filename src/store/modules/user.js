@@ -1,5 +1,5 @@
 import { loadPrivateMsgAPI, logoutAPI, loadUserLevelAPI } from '../../service/user'
-import { loadUserPlayListAPI, loadPlaylistDetailByIdAPI, loadRecentlyPlayedSongsAPI } from '../../service/playlist'
+import { loadUserPlayListAPI, loadPlaylistDetailByIdAPI, loadRecentlyPlayedSongsAPI, loadDailyRemdPlayListAPI } from '../../service/playlist'
 
 
 function initState() {
@@ -9,6 +9,7 @@ function initState() {
         playlist: [],
         likePlayList: {},
         favoritePlaylist: [],
+        recommendPlaylist: [],
         isLogin: false,
         level: {},
         recentlyPlayedSongs: [],
@@ -50,6 +51,12 @@ export default {
             loadRecentlyPlayedSongsAPI().then(res => {
                 commit('setting', { key: 'recentlyPlayedSongs', payload: res.data.list })
             })
+            // 获取专户歌单
+            loadDailyRemdPlayListAPI().then(res => {
+                console.log(res.recommend);
+                commit('setting', { key: 'recommendPlaylist', payload: res.recommend })
+            })
+
         },
         logout({ commit }) {
             return logoutAPI().then(() => {

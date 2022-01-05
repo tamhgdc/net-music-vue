@@ -7,7 +7,7 @@
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive" />
     <!-- 底部导航 -->
-    <MiniPlayer v-show="$route.meta.isNavShow" />
+    <MiniPlayer v-show="$route.meta.isMiniPlayerShow" />
     <van-tabbar
       class="nav"
       v-model="active"

@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1641103556962') format('truetype');
+  src: url('iconfont.ttf?t=1641373248781') format('truetype');
 }
 
 .iconfont {
@@ -9,6 +9,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bofang:before {
+  content: "\f0066";
 }
 
 .icon-yinleyinpin:before {
@@ -63,6 +67,10 @@
   content: "\e673";
 }
 
+.icon-24gl-play:before {
+  content: "\ea6d";
+}
+
 .icon-24gf-playlist:before {
   content: "\ea82";
 }
@@ -103,8 +111,16 @@
   content: "\e6b3";
 }
 
+.icon-youtube:before {
+  content: "\e6f8";
+}
+
 .icon-yueliang:before {
   content: "\e830";
+}
+
+.icon-gengduo1:before {
+  content: "\e66c";
 }
 
 .icon-yunpan:before {

@@ -47,7 +47,7 @@ export default {
   width: 100vw;
   .swiper-slide {
     width: 90vw;
-    border-radius: 1rem;
+    border-radius: 5vw;
 
     display: flex;
     justify-content: center;
@@ -55,7 +55,7 @@ export default {
 
     .item {
       width: 90vw;
-      border-radius: 1rem;
+      border-radius: 5vw;
       overflow: hidden;
       position: relative;
       img {
@@ -68,18 +68,18 @@ export default {
         right: 0;
         bottom: 0;
         color: white;
-        padding: 0.2rem 0.5rem;
-        border-radius: 0.6rem 0 0 0;
+        padding: 1vw 2vw;
+        border-radius: 2vw 0 0 0;
       }
     }
   }
   .swiper-pagination {
-    bottom: 0.2rem !important;
+    bottom: 1vw !important;
     .sp-customs {
-      width: 0.8rem;
-      height: 0.2rem;
-      margin: 0 0.1rem;
-      border-radius: 0.2rem;
+      width: 5vw;
+      height: 0.8vw;
+      margin: 0 0.5vw;
+      border-radius: 0.8vw;
       background-color: #cecece70;
       display: inline-block;
     }

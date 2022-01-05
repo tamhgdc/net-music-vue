@@ -23,21 +23,21 @@
           color="red"
           v-model="currRate"
           :rate="100"
-          size="10vw"
+          size="9vw"
         >
           <template #default>
             <van-icon
-              style="line-height: 10vw"
+              style="line-height: 9vw"
               color="red"
               :name="playState ? 'pause' : 'play'"
-              size="7vw"
+              size="6vw"
             />
             <van-icon name="" />
           </template>
         </van-circle>
       </div>
 
-      <PlayerActionSheet :size="'8vw'" />
+      <PlayerActionSheet :size="'6vw'" />
     </div>
   </div>
 </template>
