@@ -81,6 +81,7 @@ export default {
   justify-content: space-between;
   padding: 2vw 2vw;
   background-color: white;
+  cursor: pointer;
 
   .left-icon {
     flex-basis: 15vw;
