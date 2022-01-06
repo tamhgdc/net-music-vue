@@ -10,8 +10,9 @@ const routes = [{
         component: Home,
         meta: {
             isNavShow: true,
+            isMiniPlayerShow: true,
             isTopShow: true,
-            keepAlive: true,
+            keepAlive: false,
         }
     },
     {
@@ -20,6 +21,7 @@ const routes = [{
         component: () => import('../views/Mine.vue'),
         meta: {
             isNavShow: true,
+            isMiniPlayerShow: true,
             isTopShow: true,
             keepAlive: true,
         }
@@ -33,6 +35,7 @@ const routes = [{
         component: () => import( /* webpackChunkName: "about" */ '../views/About.vue'),
         meta: {
             isNavShow: true,
+            isMiniPlayerShow: true
         }
     },
     {
@@ -41,6 +44,8 @@ const routes = [{
         component: () => import('../views/List.vue'),
         meta: {
             isNavShow: false,
+            isMiniPlayerShow: true,
+            keepAlive: false,
         }
 
     },
@@ -50,6 +55,7 @@ const routes = [{
         component: () => import('../views/Login.vue'),
         meta: {
             isNavShow: false,
+            isMiniPlayerShow: false,
             isTopShow: false,
         }
     },
@@ -59,9 +65,21 @@ const routes = [{
         component: () => import('../views/Player.vue'),
         meta: {
             isNavShow: false,
+            isMiniPlayerShow: false,
             keepAlive: true,
         }
+    },
+    {
+        path: '/comment/:id/:type',
+        name: 'Comment',
+        component: () => import('../views/Comment.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: false,
+            keepAlive: false,
+        }
     }
+
 
 ]
 

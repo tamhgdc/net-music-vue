@@ -10,7 +10,7 @@
               name: 'List',
               params: {
                 id: pl.id,
-                type: 'BaseList',
+                type: 'ListBaseHeader',
               },
             },
             pl,

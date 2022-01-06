@@ -6,7 +6,7 @@
           name: 'List',
           params: {
             id: list.id,
-            type: 'BaseList',
+            type: 'ListBaseHeader',
           },
         }"
       >

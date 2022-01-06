@@ -42,6 +42,7 @@ instance.interceptors.response.use(
  * @returns 
  */
 export function get(url, params, all = false, key = '') {
+    console.log(params);
     /* 处理高并发请求 */
     if (all) {
         return Promise.all(params.reduce((p, c) => {

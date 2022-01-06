@@ -7,13 +7,16 @@
       <van-tab title="收藏的歌单" name="b">
         <MinePlayList :playlist="favoritePlaylist" />
       </van-tab>
-      <van-tab title="标签 3" name="c"> </van-tab>
+      <van-tab title="为你推荐" name="c">
+        <MineRemdList :playlist="recommendPlaylist" />
+      </van-tab>
     </van-tabs>
   </div>
 </template>
 
 <script>
 import MinePlayList from "./MinePlayList.vue";
+import MineRemdList from "./MineRemdList.vue";
 import { mapState } from "vuex";
 export default {
   data() {
@@ -22,10 +25,11 @@ export default {
     };
   },
   computed: {
-    ...mapState("user", ["playlist", "favoritePlaylist"]),
+    ...mapState("user", ["playlist", "favoritePlaylist", "recommendPlaylist"]),
   },
   components: {
     MinePlayList,
+    MineRemdList,
   },
 };
 </script>

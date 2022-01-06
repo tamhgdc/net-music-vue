@@ -3,7 +3,7 @@
     <!-- 轮播图 -->
     <HomeSwiper :banners="banners" :delay="2000"></HomeSwiper>
     <!-- 滚动导航 -->
-    <SwipeNav></SwipeNav>
+    <HomeDragBar />
     <!-- 推荐歌单 -->
     <RemdList></RemdList>
     <!-- 为你推荐 -->
@@ -18,9 +18,8 @@
 
 <script>
 // @ is an alias to /src
-import MySwiper from "../components/home/MySwipe.vue";
 import HomeSwiper from "../components/home/HomeSwiper.vue";
-import SwipeNav from "../components/home/SwipeNav.vue";
+import HomeDragBar from "../components/home/HomeDragBar.vue";
 import RemdList from "../components/home/RemdList.vue";
 import { loadHomePageAPI } from "../service/homepage.js";
 
@@ -46,8 +45,7 @@ export default {
     });
   },
   components: {
-    MySwiper,
-    SwipeNav,
+    HomeDragBar,
     RemdList,
     HomeSwiper,
   },

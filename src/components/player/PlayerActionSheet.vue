@@ -15,19 +15,23 @@
             当前播放<span>({{ playlist.length }})</span>
           </p>
         </div>
-        <div class="list">
-          <van-cell
+        <div ref="list" class="list">
+          <div
             :class="i == currIndex ? 'item curr' : 'item'"
             v-for="(item, i) in playlist"
             :key="item.id"
           >
-            <template #title>
+            <div>
+              <img
+                class="playing"
+                v-show="i == currIndex"
+                src="../../assets/playing.gif"
+                alt=""
+              />
               <span @click="clickHandle(item.id)">{{ item.detail.name }}</span>
-            </template>
-            <template #right-icon>
-              <van-icon name="close" @click="removeById(item.id)" />
-            </template>
-          </van-cell>
+            </div>
+            <van-icon name="close" @click="removeById(item.id)" />
+          </div>
         </div>
       </div>
     </van-action-sheet>
@@ -47,28 +51,30 @@ export default {
   computed: {
     ...mapState("player", ["playlist", "currIndex"]),
   },
+  updated() {
+    // console.log(this.$refs.list.children[this.currIndex].scrollHeight);
+    // console.log(this.$refs.list.scrollTop);
+    /* 更新滚动条位置 */
+    this.$nextTick(() => {
+      if (this.$refs.list) {
+        // console.log(
+        //   this.currIndex,
+        //   this.$refs.list.children[this.currIndex].offsetTop
+        // );
+        this.$refs.list.scrollTop =
+          this.$refs.list.children[this.currIndex].offsetTop -
+          this.$refs.list.children[this.currIndex].offsetHeight * 1.5;
+      }
+    });
+  },
   methods: {
     clickHandle(id) {
       this.playById(id);
     },
     ...mapActions("player", ["playById", "removeById"]),
   },
-  watch: {},
 };
 </script>
-<style lang="less">
-.content {
-  .van-cell__title {
-    span {
-      display: inline-block;
-      width: 60%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-  }
-}
-</style>
 <style lang="less" scoped>
 .content {
   min-height: 50vw;
@@ -88,9 +94,36 @@ export default {
   .list {
     flex: 1;
     overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+    }
     .item {
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      overflow: hidden;
+      > div {
+        flex: 1;
+        height: 10vw;
+        display: flex;
+        align-items: center;
+        span > {
+          width: 70vw;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        img {
+          margin-right: 2vw;
+        }
+      }
       &.curr {
-        color: #ff0000;
+        color: #d44037;
+      }
+      .playing {
+        width: 5vw;
+        height: 5vw;
       }
     }
   }

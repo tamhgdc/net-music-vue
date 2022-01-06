@@ -38,22 +38,30 @@ export default {
 
 <style lang="less" scoped>
 .start {
-  animation-play-state: running;
+  .s-img {
+    animation-play-state: running;
+  }
 }
 .stop {
-  animation-play-state: paused;
+  .s-img {
+    animation-play-state: paused;
+  }
 }
 
 .img-wrap {
-  animation-name: rotateImg;
-  animation-duration: 10s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
   position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-
+  .s-img {
+    width: 68%;
+    height: 68%;
+    border-radius: 68%;
+    animation-name: rotateImg;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
   .wrap {
     position: absolute;
     left: 0;
@@ -61,11 +69,7 @@ export default {
     background: url("../../assets/disc.png") center;
     background-size: contain;
   }
-  .s-img {
-    width: 67%;
-    height: 67%;
-    border-radius: 67%;
-  }
+
   .loading {
     width: 100%;
     height: 100%;

@@ -1,5 +1,6 @@
 <template>
   <div class="list-top-nav">
+    <van-sticky z-index="1" @change="change" offset-top="0"> </van-sticky>
     <van-nav-bar
       fixed
       left-text="歌单®️"
@@ -36,7 +37,14 @@ export default {
       ],
     };
   },
-  mounted() {},
+  methods: {
+    change() {
+      this.$nextTick(() => {
+        // this.$refs.bar.$el.style.background = v ? "#00000090" : "#00000000";
+        this.$refs.bar.$el.classList.toggle("o");
+      });
+    },
+  },
 };
 </script>
 
@@ -44,7 +52,6 @@ export default {
 .list-top-nav {
   .van-nav-bar {
     height: 14vw;
-    // background-color: #fff;
   }
   .van-hairline--bottom::after {
     border: 0;
@@ -55,6 +62,14 @@ export default {
   .van-nav-bar__right {
     .van-icon-search {
       margin-right: 3vw;
+    }
+  }
+  .o {
+    background-color: white;
+    z-index: 10;
+    .van-icon,
+    .van-nav-bar__text {
+      color: black;
     }
   }
 }

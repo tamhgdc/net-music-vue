@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "36566",
+      "name": "播放",
+      "font_class": "bofang",
+      "unicode": "f0066",
+      "unicode_decimal": 983142
+    },
+    {
       "icon_id": "146573",
       "name": "音乐音频",
       "font_class": "yinleyinpin",
@@ -97,6 +104,13 @@
       "unicode_decimal": 58995
     },
     {
+      "icon_id": "7594048",
+      "name": "24gl-play",
+      "font_class": "24gl-play",
+      "unicode": "ea6d",
+      "unicode_decimal": 60013
+    },
+    {
       "icon_id": "7594158",
       "name": "24gf-playlist",
       "font_class": "24gf-playlist",
@@ -167,11 +181,25 @@
       "unicode_decimal": 59059
     },
     {
+      "icon_id": "19505707",
+      "name": "youtube",
+      "font_class": "youtube",
+      "unicode": "e6f8",
+      "unicode_decimal": 59128
+    },
+    {
       "icon_id": "21186974",
       "name": "月亮",
       "font_class": "yueliang",
       "unicode": "e830",
       "unicode_decimal": 59440
+    },
+    {
+      "icon_id": "21523311",
+      "name": "更多",
+      "font_class": "gengduo1",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
     },
     {
       "icon_id": "22530139",
