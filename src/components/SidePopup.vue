@@ -14,7 +14,7 @@
       <div class="popup-login wrap">
         <router-link
           :to="{
-            name: 'Login',
+            name: isLogin ? '/' : 'Login',
           }"
         >
           <van-image

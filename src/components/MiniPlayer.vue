@@ -1,10 +1,12 @@
 <template>
-  <div class="mini-player">
+  <div v-if="playlist.length > 0" class="mini-player">
     <div class="left" @click="goToPlayer">
       <div class="disc">
         <PlayerDisc
           :state="playState"
-          :imgSrc="readied ? curr.detail.al.picUrl : null"
+          :imgSrc="
+            readied ? curr.detail.al.picUrl || curr.detail.album.picUrl : null
+          "
           :size="'15vw'"
         />
       </div>
@@ -80,7 +82,13 @@ export default {
     PlayerActionSheet,
   },
   computed: {
-    ...mapState("player", ["myPlayer", "playState", "curr", "percent"]),
+    ...mapState("player", [
+      "playlist",
+      "myPlayer",
+      "playState",
+      "curr",
+      "percent",
+    ]),
     currRate: {
       get() {
         return this.percent ? this.percent : 0;

@@ -1,6 +1,8 @@
 <template>
   <div class="list-wrap">
-    <ListTopNav />
+    <ListTopNav
+      :title="type == 'ListOfficialHeader' ? '官方动态歌单' : '歌单®️'"
+    />
     <component :detail="detail" :is="type"></component>
     <ListInfoBar :detail="detail" />
     <ListOperate :detail="detail" />
@@ -27,6 +29,7 @@
 <script>
 import ListTopNav from "../components/list/ListTopNav.vue";
 import ListBaseHeader from "../components/list/ListBaseHeader.vue";
+import ListOfficialHeader from "../components/list/ListOfficialHeader.vue";
 import ListInfoBar from "../components/list/ListInfoBar.vue";
 import ListOperate from "../components/list/ListOperate.vue";
 import ListCell from "../components/list/ListCell.vue";
@@ -47,6 +50,7 @@ export default {
   components: {
     ListTopNav,
     ListBaseHeader,
+    ListOfficialHeader,
     ListInfoBar,
     ListOperate,
     ListCell,
@@ -55,7 +59,7 @@ export default {
     loadPlaylistDetailByIdAPI(this.$route.params.id).then((res) => {
       this.detail = res.playlist;
 
-      console.log(res.playlist);
+      console.log(res);
     });
     loadPlaylistAllSongByIdAPI(this.$route.params.id).then((res) => {
       this.playlist = res.songs;

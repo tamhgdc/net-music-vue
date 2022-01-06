@@ -47,6 +47,29 @@ export default {
             commit('addUrl', song)
         },
         /**
+         * 播放所有歌曲
+         * @param {*} param0 
+         * @param {*} payload 
+         */
+        playAllBySongs({ state, commit, dispatch }, payload) {
+            const songs = payload.reduce((p, c) => {
+                // console.log(c);
+                const song = {}
+                song.isFav = false
+                song.detail = c
+                song.id = c.id
+                if (c.noCopyrightRcmd == null && state.playlist.findIndex(y => c.id == y.id) == -1)
+                    return p.concat(song)
+                else
+                    return p
+            }, [])
+            // console.log(songs)
+            if (songs.length > 0) {
+                commit('addUrls', songs)
+                dispatch('playById', songs[0].id);
+            }
+        },
+        /**
          * 播放全部
          * @param {*} payload 歌单ID
          */
@@ -98,9 +121,12 @@ export default {
                         return p
                 }, [])
                 // console.log(songs)
-                commit('addUrls', songs)
+                if (songs.length > 0) {
+                    commit('addUrls', songs)
 
-                dispatch('playById', songs[0].id);
+                    dispatch('playById', songs[0].id);
+                }
+
             })
         },
 

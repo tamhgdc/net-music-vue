@@ -34,6 +34,12 @@ export const loadPlaylistAllSongByIdAPI = (id) => get('/playlist/track/all', { i
 export const loadDailyRemdPlayListAPI = () => get('/recommend/resource')
 
 /**
+ * 获取每日推荐歌曲
+ * @returns 
+ */
+export const loadDailyRemdSongsAPI = () => get('/recommend/songs')
+
+/**
  * 获取私人FM歌单（需登录）
  * @returns 
  */
@@ -59,3 +65,15 @@ export const loadUserPlayListAPI = (uid) => get('/user/playlist', { uid })
  * @returns 
  */
 export const loadRecentlyPlayedSongsAPI = (limit = 100) => get('/record/recent/song', { limit })
+
+/**
+ * 获取所有歌单分类
+ * @returns 
+ */
+export const loadAllPlaylistCategoryAPI = () => get('/playlist/catlist')
+
+/**
+ * 获取所有热么分类
+ * @returns 
+ */
+export const loadHotPlaylistCategoryAPI = () => get('/playlist/hot')

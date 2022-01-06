@@ -1,7 +1,13 @@
 <template>
   <div class="drag-bar">
     <nav>
-      <div v-for="item in data" :key="item.id" :id="item.id" class="item">
+      <div
+        v-for="item in data"
+        :key="item.id"
+        :id="item.id"
+        class="item"
+        @click="clickHandle(item)"
+      >
         <div class="item-icon">
           <!-- <div
             class="icon"
@@ -20,17 +26,38 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import { loadHomeDragBarAPI } from "../../service/homepage";
+import { loadPrivateFMPlayListAPI } from "../../service/playlist";
 export default {
   data() {
     return {
       data: [],
+      links: ["DailyRemdList", "", "PlaylistPlaza"],
     };
   },
   created() {
     loadHomeDragBarAPI().then((res) => {
       this.data = res.data;
+      this.links.forEach((x, i) => (this.data[i].link = x));
     });
+  },
+  methods: {
+    clickHandle(item) {
+      console.log(item.name);
+      if (item.name == "私人FM") {
+        loadPrivateFMPlayListAPI().then((res) => {
+          console.log(res);
+          this.playAllBySongs(res.data);
+          this.$router.push({
+            name: "Player",
+          });
+        });
+      } else {
+        this.$router.push({ name: item.link });
+      }
+    },
+    ...mapActions("player", ["playAllBySongs"]),
   },
 };
 </script>

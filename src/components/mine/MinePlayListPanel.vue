@@ -1,5 +1,5 @@
 <template>
-  <div class="playlist-panel">
+  <div v-if="playlist.length > 0" class="playlist-panel">
     <van-tabs v-model="activeName">
       <van-tab title="创建歌单" name="a">
         <MinePlayList :playlist="playlist" />

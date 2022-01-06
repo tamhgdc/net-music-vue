@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-    // baseURL:"http://net-music.penkuoer.com",
+    // baseURL: "https://music.xuzhixiang.top",
+    // baseURL: "http://net-music.penkuoer.com",
     baseURL: "http://localhost:3000", // 网络请求的基础地址
     timeout: 5000, // 超时时间
     withCredentials: true,

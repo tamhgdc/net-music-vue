@@ -46,7 +46,7 @@ export default {
           // 返回上一级页面
           this.$router.go(-1);
         } else {
-          Toast.fail("登录失败");
+          Toast.fail(res.msg);
         }
         this.username = "";
         this.password = "";

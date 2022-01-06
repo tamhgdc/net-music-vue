@@ -1,6 +1,6 @@
 @font-face {
   font-family: "iconfont"; /* Project id  */
-  src: url('iconfont.ttf?t=1641373248781') format('truetype');
+  src: url('iconfont.ttf?t=1641457184142') format('truetype');
 }
 
 .iconfont {
@@ -111,6 +111,10 @@
   content: "\e6b3";
 }
 
+.icon-wangyiyunyinle1:before {
+  content: "\e508";
+}
+
 .icon-youtube:before {
   content: "\e6f8";
 }
@@ -129,5 +133,9 @@
 
 .icon-bofangzanting:before {
   content: "\e70c";
+}
+
+.icon-wangyiyunyinle:before {
+  content: "\e505";
 }
 
