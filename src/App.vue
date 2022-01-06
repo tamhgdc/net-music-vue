@@ -65,6 +65,7 @@ html {
   height: 100vh;
   font-size: 4vw;
   color: #505050;
+  cursor: pointer;
 }
 li {
   list-style: none;
@@ -92,6 +93,10 @@ a {
   div:nth-of-type(2) {
     flex: 1;
     overflow: auto;
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none; /* Chrome Safari */
+    }
   }
 }
 .nav {

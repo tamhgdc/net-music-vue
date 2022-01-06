@@ -7,7 +7,18 @@
           <span>{{ detail.subscribedCount | countFormat }}</span>
         </div>
         |
-        <div class="item">
+        <div
+          class="item"
+          @click="
+            $router.push({
+              name: 'Comment',
+              params: {
+                id: detail.id,
+                type: 2,
+              },
+            })
+          "
+        >
           <van-icon size="6vw" name="comment-o" />
           <span>{{ detail.commentCount | countFormat }}</span>
         </div>
@@ -40,17 +51,19 @@ export default {
 .list-info-bar {
   position: relative;
   overflow: hidden;
-  width: 65vw;
   height: 10vw;
   border-radius: 10vw;
+  width: 70vw;
   margin: 0 auto;
   background-color: white;
   box-shadow: 0 0.5vw 0.2vw 0 #00000030;
+  cursor: pointer;
   nav {
     height: 10vw;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    padding: 0 2vw;
     .item {
       display: flex;
       align-items: center;

@@ -68,7 +68,18 @@ const routes = [{
             isMiniPlayerShow: false,
             keepAlive: true,
         }
+    },
+    {
+        path: '/comment/:id/:type',
+        name: 'Comment',
+        component: () => import('../views/Comment.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: false,
+            keepAlive: false,
+        }
     }
+
 
 ]
 

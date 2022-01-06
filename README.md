@@ -148,3 +148,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 - 播放器功能完善
 - 列表页重构
+
+### 2022 年 1 月 6 日
+
+完成
+
+- 评论展示（推荐评论，热门评论，最新评论）
