@@ -50,7 +50,7 @@ export default {
       loadPlaylistByCateAPI({
         cat: this.cat,
         limit: this.limit,
-        offset: this.offset,
+        offset: this.offset * this.limit,
       }).then((res) => {
         for (let i = 0; i < res.playlists.length; i += 3) {
           this.list.push(res.playlists.slice(i, i + 3));

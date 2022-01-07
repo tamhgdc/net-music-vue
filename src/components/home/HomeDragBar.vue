@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       data: [],
-      links: ["DailyRemdList", "", "PlaylistPlaza"],
+      links: ["DailyRemdList", "", "PlaylistPlaza", "TopList"],
     };
   },
   created() {

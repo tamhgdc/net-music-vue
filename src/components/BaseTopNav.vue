@@ -4,7 +4,7 @@
       <div class="nav">
         <div class="left">
           <van-icon name="arrow-left" @click="$router.go(-1)" />
-          <slot name="title"></slot>
+          <slot name="title">{{ title }}</slot>
         </div>
         <div class="right">
           <van-icon name="share-o" />
@@ -15,7 +15,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    title: {
+      type: String,
+      default: "",
+    },
+  },
+};
 </script>
 
 <style lang="less">
@@ -24,13 +31,14 @@ export default {};
     background: white;
   }
   .nav {
-    width: 90vw;
+    width: 94vw;
     background: white;
     height: 14vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 5vw;
+    padding: 0 3vw;
   }
 }
 </style>

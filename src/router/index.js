@@ -110,10 +110,18 @@ const routes = [{
             isTopShow: false,
             keepAlive: false,
         }
+    },
+    {
+        path: '/top-list',
+        name: 'TopList',
+        component: () => import('../views/TopList.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            isTopShow: false,
+            keepAlive: false,
+        }
     }
-
-
-
 ]
 
 const router = new VueRouter({

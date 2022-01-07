@@ -3,13 +3,15 @@
     <router-link :style="{ height: size, width: size }" :to="opt.route">
       <img :src="opt.pl.picUrl || opt.pl.coverImgUrl" alt="" />
       <div class="count">
-        <van-icon
-          class="iconfont"
-          slot="icon"
-          class-prefix="icon"
-          name="bofang"
-        ></van-icon>
-        <span> {{ opt.pl.playCount || opt.pl.playcount | countFormat }}</span>
+        <slot name="title">
+          <van-icon
+            class="iconfont"
+            slot="icon"
+            class-prefix="icon"
+            name="bofang"
+          ></van-icon>
+          <span> {{ opt.pl.playCount || opt.pl.playcount | countFormat }}</span>
+        </slot>
       </div>
     </router-link>
     <div class="van-multi-ellipsis--l2">{{ opt.pl.name }}</div>
@@ -59,8 +61,8 @@ export default {
     top: 0.5vw;
     right: -0.5vw;
     font-size: 4vw;
-    padding: 0 1vw;
-    border-radius: 6vw;
+    padding: 0 1.5vw;
+    border-radius: 5vw;
     span {
       white-space: nowrap;
       font-weight: 200;

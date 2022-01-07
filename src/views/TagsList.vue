@@ -1,6 +1,10 @@
 <template>
   <div class="tags-list">
-    <BaseTopNav />
+    <BaseTopNav>
+      <template #title>
+        {{ $route.params.cat }}
+      </template>
+    </BaseTopNav>
     <TagPlaylist :cat="$route.params.cat" />
   </div>
 </template>

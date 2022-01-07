@@ -1,24 +1,17 @@
 <template>
-  <div v-if="data" class="tags-wrap">
-    <div class="tag-title">{{ data.title }}</div>
+  <div v-if="data != undefined" class="tags-wrap">
+    <div v-show="data.title" class="tag-title">{{ data.title }}</div>
 
     <div class="tags">
       <div
+        v-for="tag in data.tags"
+        :key="tag.name"
         :class="{
           tag: true,
           small: tag.name.length > 6,
           hide: tag.activity,
         }"
-        v-for="tag in data.tags"
-        :key="tag.name"
-        @click="
-          $router.push({
-            name: 'TagsList',
-            params: {
-              cat: tag.name,
-            },
-          })
-        "
+        @click="clickHandle(tag.name)"
       >
         <van-icon v-show="tag.hot" name="fire-o" color="#ee0a24" />
         <span> {{ tag.name }}</span>
@@ -29,7 +22,21 @@
 
 <script>
 export default {
-  props: ["data"],
+  props: ["data", "mode"],
+  methods: {
+    clickHandle(v) {
+      if (this.mode) {
+        this.$emit("setCat", v);
+      } else {
+        this.$router.push({
+          name: "TagsList",
+          params: {
+            cat: v,
+          },
+        });
+      }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>

@@ -81,6 +81,24 @@ a {
 .iconfont {
   position: relative;
 }
+.van-tabs__nav {
+  .van-tab {
+    color: #6c6c6c;
+    z-index: 5;
+    font-size: 4vw;
+  }
+  .van-tab--active {
+    color: #323232;
+    font-weight: 600;
+    font-size: 5vw;
+  }
+  .van-tabs__line {
+    bottom: 8.8vw;
+    z-index: 1;
+    height: 1.5vw;
+    width: 14%;
+  }
+}
 </style>
 
 <style lang="less" scoped>

@@ -7,7 +7,7 @@
     <ListInfoBar :detail="detail" />
     <ListOperate :detail="detail" />
     <van-list
-      v-if="playlist.length > 0"
+      v-if="playlist != undefined && playlist.length > 0"
       v-model="loading"
       :finished="finished"
       finished-text="没有更多了"
