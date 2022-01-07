@@ -1,7 +1,7 @@
 <template>
   <div class="tags">
     <BaseTopNav />
-    <TagsWrap />
+    <TagsWrap v-for="item in categories" :key="item.title" :data="item" />
   </div>
 </template>
 
@@ -13,17 +13,21 @@ export default {
   data() {
     return {
       tags: {},
+      categories: [],
     };
   },
   //TODO: 分类
   created() {
     loadAllPlaylistCategoryAPI().then((res) => {
       console.log(res);
-      // tags = res;
-      // res.sub.reduce((p,c)=>{
-
-      // },{})
-      // console.log(res.sub.find((x) => x.category == 0));
+      console.log(Object.keys(res.categories));
+      this.categories = Object.keys(res.categories).reduce((p, c) => {
+        return p.concat({
+          title: res.categories[c],
+          tags: res.sub.filter((x) => x.category == c),
+        });
+      }, []);
+      console.log(this.categories);
     });
   },
   components: {
@@ -37,6 +41,6 @@ export default {
 .tags {
   width: 100vw;
   height: 100vh;
-  background-color: red;
+  background-color: white;
 }
 </style>

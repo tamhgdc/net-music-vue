@@ -99,7 +99,19 @@ const routes = [{
             isMiniPlayerShow: false,
             keepAlive: false,
         }
+    },
+    {
+        path: '/tags-list/:cat',
+        name: 'TagsList',
+        component: () => import('../views/TagsList.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            isTopShow: false,
+            keepAlive: false,
+        }
     }
+
 
 
 ]

@@ -73,7 +73,17 @@ export const loadRecentlyPlayedSongsAPI = (limit = 100) => get('/record/recent/s
 export const loadAllPlaylistCategoryAPI = () => get('/playlist/catlist')
 
 /**
- * 获取所有热么分类
+ * 获取所热门分类
  * @returns 
  */
 export const loadHotPlaylistCategoryAPI = () => get('/playlist/hot')
+
+
+/**
+ * 根据分类标签获取歌单
+ * @param {*} cat 标签
+ * @param {*} limit 单页显示数量
+ * @param {*} offset 分页偏移量
+ * @returns 
+ */
+export const loadPlaylistByCateAPI = (params) => get('/top/playlist', params)
