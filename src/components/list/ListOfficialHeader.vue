@@ -1,11 +1,11 @@
 <template>
   <div class="base-header">
     <div v-if="detail.creator != undefined" class="bg">
-      <img :src="detail.backgroundCoverUrl + '?param=400y400'" alt="" />
+      <img :src="url" alt="" />
       <div class="overlay"></div>
     </div>
     <div v-if="detail.creator != undefined" class="info-wrap">
-      <div class="info-title">{{ detail.name.split("|")[1] }}</div>
+      <div class="info-title">{{ name }}</div>
       <div class="info-up">{{ detail.updateFrequency }}</div>
       <div class="info-desc">{{ detail.description }}</div>
     </div>
@@ -15,6 +15,20 @@
 <script>
 export default {
   props: ["detail"],
+  computed: {
+    name() {
+      // console.log(/\|/g.test(this.detail.name));
+      return /\|/g.test(this.detail.name)
+        ? this.detail.name.split("|")[1]
+        : this.detail.name;
+    },
+    url() {
+      return (
+        (this.detail.backgroundCoverUrl || this.detail.tracks[0].al.picUrl) +
+        "?param=400y400"
+      );
+    },
+  },
 };
 </script>
 

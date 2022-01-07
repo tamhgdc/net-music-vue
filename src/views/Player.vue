@@ -45,7 +45,7 @@ import { mapState, mapActions } from "vuex";
 import { loadLyricAPI } from "../service/song";
 import PlayerDisc from "../components/player/PlayerDisc.vue";
 import PlayerMain from "../components/player/PlayerMain.vue";
-import { Toast } from "vant";
+// import { Toast } from "vant";
 
 export default {
   data() {
@@ -57,6 +57,12 @@ export default {
       lrc: {},
       currIndex: 0,
     };
+  },
+  mounted() {
+    // if (this.playlist.length == 0) {
+    //   this.$router.push({ name: "Home" });
+    //   Toast.fail("请选择歌曲/歌单");
+    // }
   },
   computed: {
     ...mapState("player", ["myPlayer", "playState", "playlist", "curr"]),
@@ -147,12 +153,6 @@ export default {
     },
     onClickRight() {},
     ...mapActions("player", ["updateTime", "next"]),
-  },
-  mounted() {
-    if (this.playlist.length == 0) {
-      this.$router.push({ name: "Home" });
-      Toast.fail("请选择歌曲/歌单");
-    }
   },
 };
 </script>
