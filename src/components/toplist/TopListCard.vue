@@ -60,11 +60,7 @@ export default {
         name: "Player",
       });
     },
-    ...mapActions("player", [
-      "playAllByPlaylistId",
-      "playAllBySongs",
-      "playById",
-    ]),
+    ...mapActions("player", ["playAllByPlaylistId"]),
   },
 };
 </script>
@@ -73,7 +69,6 @@ export default {
 <style lang="less" scoped>
 .top-list-Card {
   padding: 1vw 0;
-
   .card {
     width: 100%;
     height: 35vw;

@@ -14,11 +14,19 @@
         </slot>
       </div>
     </router-link>
+    <img
+      @click="playAll"
+      class="play"
+      v-show="mode"
+      src="../assets/play.png"
+      alt=""
+    />
     <div class="van-multi-ellipsis--l2">{{ opt.pl.name }}</div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   props: {
     opt: {
@@ -28,6 +36,21 @@ export default {
       type: String,
       default: "25vw",
     },
+    mode: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    playAll() {
+      console.log("h");
+      this.playAllByPlaylistId(this.opt.pl.id);
+
+      this.$router.push({
+        name: "Player",
+      });
+    },
+    ...mapActions("player", ["playAllByPlaylistId"]),
   },
   filters: {
     countFormat(v) {
@@ -43,12 +66,19 @@ export default {
 
 <style lang="less" scoped>
 .play-list-block {
+  position: relative;
   display: flex;
   flex-direction: column;
   a {
-    width: 35vw;
-    height: 35vw;
     position: relative;
+    img:nth-of-type(1) {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 2vw;
+    }
   }
   .count {
     height: 6vw;
@@ -69,13 +99,13 @@ export default {
     }
     transform: scale(0.8);
   }
-  img {
+  .play {
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 2vw;
+    width: 5vw;
+    height: 5vw;
+    bottom: 11vw;
+    right: 1vw;
+    opacity: 0.5;
   }
   > div {
     width: 25vw;
