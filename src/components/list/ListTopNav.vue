@@ -1,13 +1,22 @@
 <template>
   <div class="list-top-nav">
     <van-sticky z-index="1" @change="change" offset-top="0"> </van-sticky>
-    <van-nav-bar
-      fixed
-      left-text="歌单®️"
-      left-arrow
-      @click-left="$router.go(-1)"
-      ref="bar"
-    >
+    <van-nav-bar fixed ref="bar">
+      <template #left>
+        <div class="bar-left">
+          <van-icon name="arrow-left" @click="$router.go(-1)" />
+          <div>
+            <van-icon
+              v-show="title != '歌单®️'"
+              class="iconfont"
+              slot="icon"
+              class-prefix="icon"
+              name="wangyiyunyinle"
+            ></van-icon>
+            <span>{{ title }}</span>
+          </div>
+        </div>
+      </template>
       <template #right>
         <van-icon name="search" size="18" />
         <van-popover
@@ -17,7 +26,13 @@
           :actions="actions"
         >
           <template #reference>
-            <van-icon name="setting-o" />
+            <van-icon
+              v-show="title != '歌单®️'"
+              class="iconfont"
+              slot="icon"
+              class-prefix="icon"
+              name="gengduo1"
+            ></van-icon>
           </template>
         </van-popover>
       </template>
@@ -27,6 +42,12 @@
 
 <script>
 export default {
+  props: {
+    title: {
+      type: String,
+      default: "歌单®️",
+    },
+  },
   data() {
     return {
       showPopover: false,
@@ -53,6 +74,19 @@ export default {
   .van-nav-bar {
     height: 14vw;
   }
+  .bar-left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+  }
+  .iconfont {
+    position: relative;
+    padding: 0 2vw;
+    top: 0.5vw;
+    color: white;
+    font-size: 6vw;
+  }
   .van-hairline--bottom::after {
     border: 0;
   }
@@ -68,8 +102,15 @@ export default {
     background-color: white;
     z-index: 10;
     .van-icon,
-    .van-nav-bar__text {
+    .van-nav-bar__text,
+    .bar-left,
+    .iconfont {
       color: black;
+    }
+    .bar-left {
+      .iconfont {
+        color: #fe3c30;
+      }
     }
   }
 }

@@ -1,15 +1,17 @@
 <template>
   <div class="play-list-block">
-    <router-link :to="opt.route">
-      <img :src="opt.pl.picUrl" alt="" />
+    <router-link :style="{ height: size, width: size }" :to="opt.route">
+      <img :src="opt.pl.picUrl || opt.pl.coverImgUrl" alt="" />
       <div class="count">
-        <van-icon
-          class="iconfont"
-          slot="icon"
-          class-prefix="icon"
-          name="bofang"
-        ></van-icon>
-        <span> {{ opt.pl.playCount || opt.pl.playcount | countFormat }}</span>
+        <slot name="title">
+          <van-icon
+            class="iconfont"
+            slot="icon"
+            class-prefix="icon"
+            name="bofang"
+          ></van-icon>
+          <span> {{ opt.pl.playCount || opt.pl.playcount | countFormat }}</span>
+        </slot>
       </div>
     </router-link>
     <div class="van-multi-ellipsis--l2">{{ opt.pl.name }}</div>
@@ -18,7 +20,15 @@
 
 <script>
 export default {
-  props: ["opt"],
+  props: {
+    opt: {
+      type: Object,
+    },
+    size: {
+      type: String,
+      default: "25vw",
+    },
+  },
   filters: {
     countFormat(v) {
       return v < 10000
@@ -33,13 +43,12 @@ export default {
 
 <style lang="less" scoped>
 .play-list-block {
-  width: 25vw;
-  height: 35vw;
   display: flex;
   flex-direction: column;
   a {
+    width: 35vw;
+    height: 35vw;
     position: relative;
-    flex: 1;
   }
   .count {
     height: 6vw;
@@ -47,13 +56,13 @@ export default {
     align-items: center;
     justify-content: center;
     background-color: #00000070;
-    position: absolute;
     color: white;
+    position: absolute;
     top: 0.5vw;
-    right: -1vw;
+    right: -0.5vw;
     font-size: 4vw;
-    padding: 0 1vw;
-    border-radius: 6vw;
+    padding: 0 1.5vw;
+    border-radius: 5vw;
     span {
       white-space: nowrap;
       font-weight: 200;
@@ -64,8 +73,8 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
-    width: 25vw;
-    height: 25vw;
+    width: 100%;
+    height: 100%;
     border-radius: 2vw;
   }
   > div {

@@ -34,6 +34,12 @@ export const loadPlaylistAllSongByIdAPI = (id) => get('/playlist/track/all', { i
 export const loadDailyRemdPlayListAPI = () => get('/recommend/resource')
 
 /**
+ * 获取每日推荐歌曲
+ * @returns 
+ */
+export const loadDailyRemdSongsAPI = () => get('/recommend/songs')
+
+/**
  * 获取私人FM歌单（需登录）
  * @returns 
  */
@@ -59,3 +65,47 @@ export const loadUserPlayListAPI = (uid) => get('/user/playlist', { uid })
  * @returns 
  */
 export const loadRecentlyPlayedSongsAPI = (limit = 100) => get('/record/recent/song', { limit })
+
+/**
+ * 获取所有歌单分类
+ * @returns 
+ */
+export const loadAllPlaylistCategoryAPI = () => get('/playlist/catlist')
+
+/**
+ * 获取所热门分类
+ * @returns 
+ */
+export const loadHotPlaylistCategoryAPI = () => get('/playlist/hot')
+
+
+/**
+ * 根据分类标签获取歌单
+ * @param {*} cat 标签
+ * @param {*} limit 单页显示数量
+ * @param {*} offset 分页偏移量
+ * @returns 
+ */
+export const loadPlaylistByCateAPI = (params) => get('/top/playlist', params)
+
+/**
+ * 获取精品歌单标签
+ * @returns 
+ */
+export const loadHighQualityTagsAPI = () => get('/playlist/highquality/tags')
+
+/**
+ * 获取精品歌单
+ * @param {*} cat tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从精品歌单标签列表接口获取
+ * @param {*} limit 单页显示数量
+ * @param {*} before 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数
+ * @returns 
+ */
+export const loadHighQualityPlayListAPI = (params) => get('/top/playlist/highquality', params)
+
+
+/**
+ * 获取排行榜
+ * @returns 
+ */
+export const loadTopListAPI = () => get('/toplist/detail');

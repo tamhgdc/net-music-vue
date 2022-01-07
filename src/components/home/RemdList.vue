@@ -10,7 +10,9 @@
               name: 'List',
               params: {
                 id: pl.id,
-                type: 'ListBaseHeader',
+                type: pl.alg.includes('official')
+                  ? 'ListOfficialHeader'
+                  : 'ListBaseHeader',
               },
             },
             pl,

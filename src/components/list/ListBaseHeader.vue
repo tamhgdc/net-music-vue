@@ -52,7 +52,7 @@ export default {
       left: 0;
       width: 100%;
       height: 100%;
-      background: #ffffff30;
+      background: #00000030;
       backdrop-filter: blur(2vw);
       -webkit-backdrop-filter: blur(2vw);
     }

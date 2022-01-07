@@ -1,10 +1,10 @@
 <template>
   <div :class="playState ? 'player start' : 'player stop'">
-    <van-image class="bg" ref="bg" :src="this.imgSrc">
-      <template v-slot:loading>
-        <div class="loading"></div>
-      </template>
-    </van-image>
+    <div class="bg-wrap">
+      <van-image ref="bg" width="100vh" :src="imgSrc + '?param=700y700'">
+      </van-image>
+      <div class="overlay"></div>
+    </div>
     <div>
       <van-nav-bar
         left-text="返回"
@@ -27,7 +27,11 @@
     </div>
 
     <div class="needle"></div>
-    <PlayerDisc :state="state" :imgSrc="imgSrc" :size="'60vw'" />
+    <PlayerDisc
+      :state="state"
+      :imgSrc="imgSrc + '?param=200y200'"
+      :size="'60vw'"
+    />
     <div ref="lrcWrap" :currIndex="currIndex" class="lyric">
       <p v-for="(t, i) in lrc.text" :key="i" v-html="t"></p>
     </div>
@@ -41,6 +45,7 @@ import { mapState, mapActions } from "vuex";
 import { loadLyricAPI } from "../service/song";
 import PlayerDisc from "../components/player/PlayerDisc.vue";
 import PlayerMain from "../components/player/PlayerMain.vue";
+import { Toast } from "vant";
 
 export default {
   data() {
@@ -59,7 +64,7 @@ export default {
   watch: {
     curr(v) {
       if (v) {
-        this.imgSrc = v.detail.al.picUrl;
+        this.imgSrc = v.detail.al.picUrl || v.detail.album.picUrl;
         this.n = v.detail.name;
 
         // 解析歌词
@@ -143,6 +148,12 @@ export default {
     onClickRight() {},
     ...mapActions("player", ["updateTime", "next"]),
   },
+  mounted() {
+    if (this.playlist.length == 0) {
+      this.$router.push({ name: "Home" });
+      Toast.fail("请选择歌曲/歌单");
+    }
+  },
 };
 </script>
 
@@ -161,23 +172,24 @@ export default {
   flex-direction: column;
   align-items: center;
   background-color: #313131;
+  background-size: cover;
   overflow: hidden;
-  .bg {
-    overflow: hidden;
-    width: 100vw;
-    height: 100vh;
+  .bg-wrap {
     position: absolute;
-    left: 0;
     top: 0;
-    z-index: 0;
-    background-color: #313131;
-    background-size: cover;
-    background-position: center;
-    filter: blur(10vw);
-    .loading {
-      width: 100%;
-      height: 100%;
-      background-color: #313131;
+    left: 0;
+
+    .overlay {
+      background: #00000030;
+      backdrop-filter: blur(2vw);
+      -webkit-backdrop-filter: blur(2vw);
+    }
+    > div {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
     }
   }
 

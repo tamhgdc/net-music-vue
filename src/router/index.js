@@ -27,15 +27,36 @@ const routes = [{
         }
     },
     {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import( /* webpackChunkName: "about" */ '../views/About.vue'),
+        path: '/daily-remd-list',
+        name: 'DailyRemdList',
+        component: () => import('../views/DailyRemdList.vue'),
         meta: {
-            isNavShow: true,
-            isMiniPlayerShow: true
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            isTopShow: false,
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/playlist-plaza',
+        name: 'PlaylistPlaza',
+        component: () => import('../views/PlaylistPlaza.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            isTopShow: false,
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/tags',
+        name: 'Tags',
+        component: () => import('../views/Tags.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            isTopShow: false,
+            keepAlive: false,
         }
     },
     {
@@ -78,9 +99,29 @@ const routes = [{
             isMiniPlayerShow: false,
             keepAlive: false,
         }
+    },
+    {
+        path: '/tags-list/:cat',
+        name: 'TagsList',
+        component: () => import('../views/TagsList.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            isTopShow: false,
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/top-list',
+        name: 'TopList',
+        component: () => import('../views/TopList.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            isTopShow: false,
+            keepAlive: false,
+        }
     }
-
-
 ]
 
 const router = new VueRouter({

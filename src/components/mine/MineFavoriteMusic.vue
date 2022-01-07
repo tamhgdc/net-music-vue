@@ -3,7 +3,9 @@
     <div>
       <router-link to="/">
         <div class="img-wrap">
-          <img :src="isLogin ? getLikePlayListImg() : null" />
+          <img
+            :src="isLogin ? getLikePlayListImg() + '?param=100y100' : null"
+          />
           <div>
             <van-icon class="icon" name="like"> </van-icon>
           </div>

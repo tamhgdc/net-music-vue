@@ -29,6 +29,7 @@
 
 <script>
 import { sendCaptchaAPI, loginByPhoneAPI } from "../../service/login.js";
+import { mapActions, mapMutations } from "vuex";
 import { Toast } from "vant";
 export default {
   data() {
@@ -58,8 +59,11 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           Toast.success("登录成功");
-          this.$store.commit("setProfile", res.profile);
-          this.$store.dispatch("loadPrivateMsg");
+          // 设置用户信息
+          this.setProfile(res.profile);
+          // 加载用户数据
+          this.loadUserData();
+          // 返回上一级页面
           this.$router.go(-1);
         } else {
           Toast.fail("登录失败");
@@ -68,6 +72,8 @@ export default {
         this.password = "";
       });
     },
+    ...mapActions("user", ["loadUserData"]),
+    ...mapMutations("user", ["setProfile"]),
   },
 };
 </script>

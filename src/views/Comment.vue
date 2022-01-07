@@ -24,21 +24,17 @@
       </van-sticky>
     </div>
     <div class="list-wrap">
-      <CommentList
-        :opt="{
-          id: $route.params.id,
-          type: 2,
-          sortType,
-        }"
-        @setTotalCount="setTotalCount"
-      />
+      <CommentList :opt="opt" @setTotalCount="setTotalCount" />
     </div>
+    <CommentInput :opt="opt" @send="send" />
   </div>
 </template>
 
 <script>
 import BaseTopNav from "../components/BaseTopNav.vue";
 import CommentList from "../components/comment/CommentList.vue";
+import CommentInput from "../components/comment/CommentInput.vue";
+import { Toast } from "vant";
 
 export default {
   data() {
@@ -50,15 +46,39 @@ export default {
   components: {
     BaseTopNav,
     CommentList,
+    CommentInput,
   },
   methods: {
     setTotalCount(v) {
       // console.log(v);
       this.totalCount = v;
     },
+    send(r) {
+      switch (r.code) {
+        case 200:
+          Toast.success(r.msg);
+          this.sortType = 3;
+          break;
+        case 301:
+          Toast.fail(r.msg);
+          break;
+        default:
+          Toast.fail(r.msg);
+      }
+    },
+  },
+  computed: {
+    opt() {
+      return {
+        id: this.$route.params.id,
+        type: this.$route.params.type,
+        sortType: this.sortType,
+      };
+    },
   },
 };
 </script>
+
 <style lang="less" scoped>
 .comment {
   background-color: white;

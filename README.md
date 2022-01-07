@@ -1,84 +1,40 @@
 # net-music-vue
 
-## Project setup
+## 运行
 
-```
-npm install
-```
+### 服务端部署
 
-### Compiles and hot-reloads for development
+服务端使用 [Binaryify/NeteaseCloudMusicApi: 网易云音乐 Node.js API service (github.com)](https://github.com/Binaryify/NeteaseCloudMusicApi) 
 
-```
-npm run serve
-```
+#### 1. 安装
 
-### Compiles and minifies for production
-
-```
-npm run build
+```bash
+git clone git@github.com:Binaryify/NeteaseCloudMusicApi.git
+npm i
 ```
 
-### Lints and fixes files
+#### 2. 运行
 
+```bash
+node app.js
 ```
-npm run lint
+
+
+
+### 项目部署
+
+#### 1.安装
+
+```BASH
+git clone git@gitee.com:convert_to/net-music-vue.git # 克隆项目到本地
+npm i # 安装依赖
 ```
 
-### Customize configuration
+#### 2.运行
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
-
-## api
-
-### user.js
-
-| 函数                 | 描述         |
-| -------------------- | ------------ |
-| loadPrivateMsgAPI    | 获取用户私信 |
-| dailySignInAPI       | 签到         |
-| likeOrNotAPI(params) | 喜欢音乐     |
-| logoutAPI            | 退出         |
-
-### playlist.js
-
-| 函数                           | 描述                       |
-| ------------------------------ | -------------------------- |
-| loadPlaylistAPI                | 获取推荐歌单               |
-| loadPlaylistAndLimitAPI(limit) | 获取推荐歌单 默认获取 6 条 |
-| loadPlaylistByIdAPI(id)        | 通过 ID 获取播放列表       |
-| loadDailyRemdPlayListAPI       | 获取每日推荐歌单（需登录） |
-| loadPrivateFMPlayListAPI       | 获取私人 FM 歌单（需登录） |
-| loadLikePlayListAPI(did)       | 获取用户喜欢列表           |
-
-### login.js
-
-| 函数                  | 描述                 |
-| --------------------- | -------------------- |
-| loginByPhoneAPI(obj)  | 手机密码｜验证码登录 |
-| sendCaptchaAPI        | 发送给验证码         |
-| loginByEmailAPI (obj) | 邮箱登录             |
-| getQrCodeAPI          | 获取二维码           |
-| checkQrCodeAPI(key)   | 校验二维码状态       |
-
-### homepage.js
-
-| 函数            | 描述           |
-| --------------- | -------------- |
-| loadHomePageAPI | 获取发现页数据 |
-
-### banner.js
-
-| 函数                       | 描述        |
-| -------------------------- | ----------- |
-| <del>loadBannersAPI </del> | 获取 banner |
-
-### songs.js
-
-| 函数              | 描述             |
-| ----------------- | ---------------- |
-| loadSongUrlAPI    | 获取歌曲播放地址 |
-| loadSongDetailAPI | 获取歌曲详情     |
-| loadLyricAPI      | 获取歌词         |
+```bash
+npm run serve # 运行
+```
 
 ## 日志
 
@@ -153,4 +109,76 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 完成
 
-- 评论展示（推荐评论，热门评论，最新评论）
+- 歌单和歌曲评论展示（推荐评论，热门评论，最新评论）
+- 歌单列表样式完善（官方歌单样式，基础歌单样式）
+- 首页（每日推荐，私人 FM）
+
+待解决
+
+- 评论点赞，发送评论，报错（请您联系运营商或者重新绑定号码验证~ 风险提示）
+
+### 2022 年 1 月 7 日
+
+完成
+
+- 歌单广场 --- 更多页面渲染（歌单类别）--- 点击可跳转对应的歌单列表
+
+- 歌单广场内容（精品区可筛选分类）
+- 排行榜 目前完成了两个模块的展示（可直接点图标播放全部，也可跳转歌单详情页）
+  - 官方榜单 
+  - 全球榜单（通过正则过滤）
+
+
+
+
+## API
+
+### user.js
+
+| 函数                 | 描述         |
+| -------------------- | ------------ |
+| loadPrivateMsgAPI    | 获取用户私信 |
+| dailySignInAPI       | 签到         |
+| likeOrNotAPI(params) | 喜欢音乐     |
+| logoutAPI            | 退出         |
+
+### playlist.js
+
+| 函数                           | 描述                       |
+| ------------------------------ | -------------------------- |
+| loadPlaylistAPI                | 获取推荐歌单               |
+| loadPlaylistAndLimitAPI(limit) | 获取推荐歌单 默认获取 6 条 |
+| loadPlaylistByIdAPI(id)        | 通过 ID 获取播放列表       |
+| loadDailyRemdPlayListAPI       | 获取每日推荐歌单（需登录） |
+| loadPrivateFMPlayListAPI       | 获取私人 FM 歌单（需登录） |
+| loadLikePlayListAPI(did)       | 获取用户喜欢列表           |
+
+### login.js
+
+| 函数                  | 描述                 |
+| --------------------- | -------------------- |
+| loginByPhoneAPI(obj)  | 手机密码｜验证码登录 |
+| sendCaptchaAPI        | 发送给验证码         |
+| loginByEmailAPI (obj) | 邮箱登录             |
+| getQrCodeAPI          | 获取二维码           |
+| checkQrCodeAPI(key)   | 校验二维码状态       |
+
+### homepage.js
+
+| 函数            | 描述           |
+| --------------- | -------------- |
+| loadHomePageAPI | 获取发现页数据 |
+
+### banner.js
+
+| 函数                       | 描述        |
+| -------------------------- | ----------- |
+| <del>loadBannersAPI </del> | 获取 banner |
+
+### songs.js
+
+| 函数              | 描述             |
+| ----------------- | ---------------- |
+| loadSongUrlAPI    | 获取歌曲播放地址 |
+| loadSongDetailAPI | 获取歌曲详情     |
+| loadLyricAPI      | 获取歌词         |

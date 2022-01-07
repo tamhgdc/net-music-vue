@@ -4,7 +4,7 @@
       <div @click="playAll">
         <van-icon size="7vw" class="play" name="play-circle" />
         <span class="title">播放全部</span>
-        <span class="count">({{ detail.trackCount }})</span>
+        <span class="count">({{ detail.trackCount || detail.length }})</span>
       </div>
       <div>
         <van-icon size="5vw" name="down" />
@@ -20,12 +20,23 @@ export default {
   props: ["detail"],
   methods: {
     playAll() {
-      this.playAllByPlaylistId(this.detail.id);
+      if (this.detail.id) {
+        console.log("走playAllByPlaylistId");
+        this.playAllByPlaylistId(this.detail.id);
+      } else {
+        console.log("走playAllBySongs");
+        this.playAllBySongs(this.detail);
+      }
+
       this.$router.push({
         name: "Player",
       });
     },
-    ...mapActions("player", ["playAllByPlaylistId", "playById"]),
+    ...mapActions("player", [
+      "playAllByPlaylistId",
+      "playAllBySongs",
+      "playById",
+    ]),
   },
 };
 </script>

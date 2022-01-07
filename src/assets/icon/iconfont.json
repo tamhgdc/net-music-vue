@@ -181,6 +181,13 @@
       "unicode_decimal": 59059
     },
     {
+      "icon_id": "18921142",
+      "name": "网易云音乐",
+      "font_class": "wangyiyunyinle1",
+      "unicode": "e508",
+      "unicode_decimal": 58632
+    },
+    {
       "icon_id": "19505707",
       "name": "youtube",
       "font_class": "youtube",
@@ -214,6 +221,13 @@
       "font_class": "bofangzanting",
       "unicode": "e70c",
       "unicode_decimal": 59148
+    },
+    {
+      "icon_id": "26450335",
+      "name": "网易云音乐",
+      "font_class": "wangyiyunyinle",
+      "unicode": "e505",
+      "unicode_decimal": 58629
     }
   ]
 }
