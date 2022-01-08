@@ -43,6 +43,13 @@ export default {
           this.setProfile(res.profile);
           // 加载用户数据
           this.loadUserData();
+          localStorage.setItem(
+            "userData",
+            JSON.stringify({
+              account: this.username,
+              psw: md5(this.password).toString(),
+            })
+          );
           // 返回上一级页面
           this.$router.go(-1);
         } else {

@@ -34,6 +34,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: space-between;
+  margin-bottom: 10vh;
   .list-item {
     margin: 2vw;
     > a {
@@ -45,16 +46,21 @@ export default {
         border-radius: 3vw;
       }
       > div:nth-of-type(2) {
+        height: 15vw;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         padding-left: 2vw;
+        p {
+          line-height: 5vw;
+        }
         .list-name {
           width: 60vw;
           font-size: 5vw;
           color: black;
         }
         .list-song-count {
+          font-size: 3vw;
           color: @gray-7;
         }
       }

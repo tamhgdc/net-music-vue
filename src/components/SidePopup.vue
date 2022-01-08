@@ -85,6 +85,7 @@ export default {
     logout() {
       this.logoutAction().then(() => {
         Toast.success("退出成功");
+        localStorage.removeItem("userData");
         this.title = "立即登录";
       });
     },

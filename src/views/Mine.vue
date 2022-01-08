@@ -1,19 +1,24 @@
 <template>
-  <div class="mine">
-    <MineBaseInfo />
-    <MineOperatePanel />
-    <MineFavoriteMusic />
-    <MinePlayListPanel />
+  <div>
+    <Top />
+    <div class="mine">
+      <MineBaseInfo />
+      <MineOperatePanel />
+      <MineFavoriteMusic />
+      <MinePlayListPanel />
+    </div>
   </div>
 </template>
 
 <script>
+import Top from "../components/Top.vue";
 import MineBaseInfo from "../components/mine/MineBaseInfo.vue";
 import MineOperatePanel from "../components/mine/MineOperatePanel.vue";
 import MineFavoriteMusic from "../components/mine/MineFavoriteMusic.vue";
 import MinePlayListPanel from "../components/mine/MinePlayListPanel.vue";
 export default {
   components: {
+    Top,
     MineBaseInfo,
     MineOperatePanel,
     MineFavoriteMusic,
@@ -24,7 +29,7 @@ export default {
 
 <style lang="less" scoped>
 .mine {
-  overflow: hidden;
+  overflow: scroll;
   & > div {
     width: 80vw;
     margin-left: auto;

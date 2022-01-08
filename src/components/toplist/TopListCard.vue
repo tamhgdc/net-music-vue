@@ -24,8 +24,10 @@
         </div>
         <div class="right" @click="$router.push(opt.route)">
           <div class="item" v-for="(t, i) in opt.pl.tracks" :key="t.first">
-            <p>{{ i + 1 }}.{{ t.first }} - {{ t.second }}</p>
-            <p>-</p>
+            <p class="van-ellipsis">
+              {{ i + 1 }}.{{ t.first }} - {{ t.second }}
+            </p>
+            <p class="van-ellipsis">-</p>
           </div>
         </div>
       </div>
@@ -133,6 +135,9 @@ export default {
         .item {
           display: flex;
           justify-content: space-between;
+        }
+        p {
+          width: 62vw;
         }
       }
     }

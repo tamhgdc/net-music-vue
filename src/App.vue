@@ -1,40 +1,47 @@
 <template>
   <div id="app">
-    <Top v-show="$route.meta.isTopShow"></Top>
     <!-- 路由视图 -->
     <keep-alive>
-      <router-view v-if="$route.meta.keepAlive" />
+      <router-view
+        v-if="$route.meta.keepAlive"
+        :style="{ paddingBottom: $route.meta.isMiniPlayerShow ? '10vh' : 0 }"
+      />
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive" />
+    <router-view
+      v-if="!$route.meta.keepAlive"
+      :style="{ paddingBottom: $route.meta.isMiniPlayerShow ? '10vh' : 0 }"
+    />
     <!-- 底部导航 -->
     <MiniPlayer v-show="$route.meta.isMiniPlayerShow" />
-    <van-tabbar
-      class="nav"
-      v-model="active"
-      active-color="#ee0a24"
-      inactive-color="#000"
-      v-show="$route.meta.isNavShow"
-      route
-    >
-      <van-tabbar-item
-        v-for="link in links"
-        :key="link.title"
-        :to="{ name: link.name }"
+    <div class="nav">
+      <van-tabbar
+        v-model="active"
+        active-color="#ee0a24"
+        inactive-color="#000"
+        v-show="$route.meta.isNavShow"
+        route
       >
-        <van-icon
-          class="iconfont"
-          slot="icon"
-          class-prefix="icon"
-          :name="link.icon"
-        ></van-icon>
-        <span>{{ link.title }}</span>
-      </van-tabbar-item>
-    </van-tabbar>
+        <van-tabbar-item
+          v-for="link in links"
+          :key="link.title"
+          :to="{ name: link.name }"
+        >
+          <van-icon
+            class="iconfont"
+            slot="icon"
+            class-prefix="icon"
+            :name="link.icon"
+          ></van-icon>
+          <span>{{ link.title }}</span>
+        </van-tabbar-item>
+      </van-tabbar>
+    </div>
   </div>
 </template>
 <script>
-import Top from "./components/Top.vue";
 import MiniPlayer from "./components/MiniPlayer.vue";
+import { loginByPhoneAPI, loginByEmailAPI } from "./service/login.js";
+import { mapMutations, mapActions } from "vuex";
 export default {
   data() {
     return {
@@ -43,14 +50,42 @@ export default {
         { name: "Home", title: "发现", icon: "wyy" },
         { name: "", title: "播客", icon: "guangbo" },
         { name: "Mine", title: "我的", icon: "yinleyinpin" },
-        { name: "", title: "关注", icon: "yonghubangding-copy" },
+        { name: "Follow", title: "关注", icon: "yonghubangding-copy" },
         { name: "", title: "云村", icon: "luntan" },
       ],
     };
   },
   components: {
-    Top,
     MiniPlayer,
+  },
+  created() {
+    if (localStorage.getItem("userData")) {
+      this.login(JSON.parse(localStorage.getItem("userData")), (res) => {
+        if (res.code == 200) {
+          // 设置用户信息
+          this.setProfile(res.profile);
+          // 加载用户数据
+          this.loadUserData();
+        }
+      });
+    }
+  },
+  methods: {
+    login({ account, psw }, callback) {
+      if (account.includes("@")) {
+        loginByEmailAPI({
+          email: account,
+          md5_password: psw,
+        }).then((res) => callback(res));
+      } else {
+        loginByPhoneAPI({
+          phone: account,
+          md5_password: psw,
+        }).then((res) => callback(res));
+      }
+    },
+    ...mapActions("user", ["loadUserData"]),
+    ...mapMutations("user", ["setProfile"]),
   },
 };
 </script>
@@ -99,6 +134,12 @@ a {
     width: 14%;
   }
 }
+#app {
+  .van-tabbar {
+    height: 10vh;
+    z-index: 10;
+  }
+}
 </style>
 
 <style lang="less" scoped>
@@ -108,7 +149,7 @@ a {
   height: 100%;
   display: flex;
   flex-direction: column;
-  div:nth-of-type(2) {
+  > div:nth-of-type(1) {
     flex: 1;
     overflow: auto;
     scrollbar-width: none; /* Firefox */
@@ -118,8 +159,6 @@ a {
   }
 }
 .nav {
-  position: static !important;
-  height: 10%;
   i {
     font-size: 2rem;
   }

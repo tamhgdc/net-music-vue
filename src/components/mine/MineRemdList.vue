@@ -29,6 +29,7 @@ export default {
 
 <style lang="less" scoped>
 .remd-list {
+  padding: 0 2vw;
   display: grid;
   grid-template-columns: repeat(3, 32%);
   grid-gap: 2vw;

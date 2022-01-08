@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { Dialog } from "vant";
 import { likeCommentAPI } from "../../service/comment";
 export default {
   props: ["comment", "opt"],
@@ -57,8 +58,14 @@ export default {
         cid: this.comment.commentId,
         type: this.opt.type,
         t: this.comment.liked ? 0 : 1,
-      }).then(() => {
+      }).then((res) => {
         this.comment.liked = !this.comment.liked;
+        if (res.data.dialog) {
+          Dialog.alert({
+            title: res.data.dialog.title,
+            message: res.data.dialog.subtitle,
+          });
+        }
       });
     },
   },

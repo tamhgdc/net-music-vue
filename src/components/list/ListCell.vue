@@ -11,6 +11,7 @@
     <div class="song-info" @click="clickHandle">
       <div class="song-name">
         {{ opt.song.name }}
+        <span v-if="opt.song.alia.length > 0"> ({{ opt.song.alia[0] }}) </span>
       </div>
       <div class="song-misc">
         <span v-show="isShowVIP" class="misc-mark vip">VIP</span>
@@ -112,6 +113,11 @@ export default {
       overflow: hidden;
       white-space: nowrap;
       font-size: 4.5vw;
+    }
+    .song-name {
+      span {
+        color: #999999;
+      }
     }
     .song-misc {
       font-size: 3vw;

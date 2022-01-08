@@ -54,10 +54,17 @@ export const loadLikePlayListAPI = (uid) => get('/likelist', { uid });
 
 /**
  * 获取用户歌单
- * @param {*} uid 用户uid
+ * @param {*} uid 用户 uid
  * @returns 
  */
 export const loadUserPlayListAPI = (uid) => get('/user/playlist', { uid })
+
+/**
+ * 获取多个用户的歌单
+ * @param {*} uid 用户 uid 数组
+ * @returns 
+ */
+export const loadUsersPlayListAPI = (uid) => get('/user/playlist', uid, true, "uid")
 
 /**
  * 获取用户最近播放歌曲
@@ -109,3 +116,11 @@ export const loadHighQualityPlayListAPI = (params) => get('/top/playlist/highqua
  * @returns 
  */
 export const loadTopListAPI = () => get('/toplist/detail');
+
+/**
+ * 
+ * @param {*} t 类型 1 收藏，2 取消
+ * @param {*} id 歌单 id 
+ * @returns 
+ */
+export const subscribeAPI = (params) => get('/playlist/subscribe', params);

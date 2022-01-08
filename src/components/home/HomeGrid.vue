@@ -2,21 +2,27 @@
   <div class="grid">
     <div class="grid-header">
       <h3>
-        <slot name="grid-left-title">推荐歌单</slot>
+        <slot name="title">推荐歌单</slot>
       </h3>
-      <router-link to="/">
-        <slot name="grid-right-title" class="grid-link">更多</slot
+      <router-link :to="route || '/'">
+        <slot name="button" class="grid-link">更多</slot
         ><van-icon name="arrow" />
       </router-link>
     </div>
     <div class="grid-content-wrap">
-      <slot name="grid-content" class="grid-content"></slot>
+      <slot name="content" class="grid-content"></slot>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    route: {
+      type: Object,
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -44,13 +50,11 @@ export default {};
     width: 100%;
     overflow-y: hidden;
     overflow-x: auto;
+    display: flex;
 
     > div {
-      display: flex;
-      > div {
-        flex-shrink: 0;
-        margin-left: 5vw;
-      }
+      flex-shrink: 0;
+      margin-left: 5vw;
     }
   }
   scrollbar-width: none; /* Firefox */

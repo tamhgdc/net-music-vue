@@ -11,7 +11,9 @@
         <van-tab title="精品">
           <PlazaHighQuality />
         </van-tab>
-
+        <van-tab title="官方">
+          <PlazaOfficialList />
+        </van-tab>
         <van-tab v-for="cat in cats" :key="cat" :title="cat">
           <div class="list-wrap"><TagsPlaylist :cat="cat" /></div>
         </van-tab>
@@ -23,6 +25,7 @@
 <script>
 import BaseTopNav from "../components/BaseTopNav.vue";
 import PlazaHighQuality from "../components/plaza/PlazaHighQuality.vue";
+import PlazaOfficialList from "../components/plaza/PlazaOfficialList.vue";
 import TagsPlaylist from "../components/tags/TagPlaylist.vue";
 export default {
   data() {
@@ -34,7 +37,11 @@ export default {
   components: {
     BaseTopNav,
     PlazaHighQuality,
+    PlazaOfficialList,
     TagsPlaylist,
+  },
+  created() {
+    this.active = this.$route.params.act || 0;
   },
 };
 </script>
