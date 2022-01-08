@@ -20,7 +20,10 @@
 
 <script>
 import PLBlock from "../PLBlock.vue";
-import { loadUsersPlayListAPI } from "../../service/playlist";
+import {
+  loadUsersPlayListAPI,
+  loadPlaylistDetailByIdsAPI,
+} from "../../service/playlist";
 export default {
   data() {
     return {
@@ -28,13 +31,18 @@ export default {
     };
   },
   created() {
-    loadUsersPlayListAPI([1287293193, 1463586082]).then((res) => {
-      res[0].playlist.splice(0, 1);
-      this.list = res
-        .map((x) => x.playlist)
-        .flat()
-        .sort((a, b) => b.playCount - a.playCount);
-    });
+    loadUsersPlayListAPI([1287293193, 1463586082])
+      .then((res) => {
+        res[0].playlist.splice(0, 1);
+        const ids = res
+          .map((x) => x.playlist)
+          .flat()
+          .map((x) => x.id);
+        return loadPlaylistDetailByIdsAPI(ids);
+      })
+      .then((res) => {
+        this.list = res.map((x) => x.playlist).sort(() => Math.random() - 0.5);
+      });
   },
   components: {
     PLBlock,

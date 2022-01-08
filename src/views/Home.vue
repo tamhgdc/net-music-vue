@@ -15,6 +15,9 @@
     <!-- 场景歌单 -->
     <!-- <HomeScenesList /> -->
 
+    <!-- 热门话题 -->
+    <HomeHotTopic />
+
     <!-- 为你推荐 -->
     <!-- 精选音乐视频 -->
 
@@ -35,6 +38,7 @@ import HomeDragBar from "../components/home/HomeDragBar.vue";
 // import HomeRadarList from "../components/home/HomeRadarList.vue";
 // import HomeScenesList from "../components/home/HomeScenesList.vue";
 import HomeBasicList from "../components/home/HomeBasicList.vue";
+import HomeHotTopic from "../components/home/HomeHotTopic.vue";
 import { loadHomePageAPI } from "../service/homepage.js";
 import { mapState } from "vuex";
 
@@ -91,8 +95,8 @@ export default {
     // HomeRadarList,
     // HomeScenesList,
     HomeSwiper,
-
     HomeBasicList,
+    HomeHotTopic,
   },
   computed: {
     ...mapState("user", ["profile"]),

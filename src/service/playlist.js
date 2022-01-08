@@ -21,6 +21,13 @@ export const loadPlaylistAndLimitAPI = (limit = 6) => get('/personalized', { lim
 export const loadPlaylistDetailByIdAPI = (id) => get('/playlist/detail', { id })
 
 /**
+ * 批量获取歌单详情
+ * @param {*} ids 
+ * @returns 
+ */
+export const loadPlaylistDetailByIdsAPI = (ids) => get('/playlist/detail', ids, true, "id")
+
+/**
  * 通过 ID 获取歌单所有歌曲
  * @param {*} id 
  * @returns 

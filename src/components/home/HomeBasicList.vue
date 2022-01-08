@@ -33,6 +33,7 @@ import PLBlock from "../PLBlock.vue";
 import {
   loadUserPlayListAPI,
   loadPlaylistAndLimitAPI,
+  loadPlaylistDetailByIdsAPI,
 } from "../../service/playlist";
 export default {
   props: ["opt"],
@@ -47,13 +48,18 @@ export default {
   },
   created() {
     if (this.opt.id) {
-      loadUserPlayListAPI(this.opt.id).then((res) => {
-        // console.log(res.result);
-        this.list = res.playlist
-          .slice(2)
-          .sort(() => Math.random() - 0.5)
-          .slice(0, 6);
-      });
+      loadUserPlayListAPI(this.opt.id)
+        .then((res) => {
+          const ids = res.playlist.map((x) => x.id);
+          return loadPlaylistDetailByIdsAPI(ids);
+        })
+        .then((res) => {
+          this.list = res
+            .map((x) => x.playlist)
+            .slice(2)
+            .sort(() => Math.random() - 0.5)
+            .slice(0, 6);
+        });
     } else {
       loadPlaylistAndLimitAPI(6).then((res) => {
         // console.log(res.result);

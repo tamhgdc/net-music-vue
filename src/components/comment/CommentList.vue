@@ -18,7 +18,7 @@
 
 <script>
 import CommentCell from "../comment/CommentCell.vue";
-import { LoadCommentsAPI } from "../../service/comment";
+import { LoadCommentsAPI, loadEventCommentAPI } from "../../service/comment";
 export default {
   props: ["opt"],
   data() {
@@ -33,20 +33,29 @@ export default {
   },
   methods: {
     onLoad() {
-      LoadCommentsAPI({
-        ...this.opt,
-        pageNo: this.pageNo,
-        pageSize: this.pageSize,
-      }).then((res) => {
-        if (this.pageNo == 1) {
-          console.log(res.data.totalCount);
-          this.$emit("setTotalCount", res.data.totalCount);
-        }
-        this.list = this.list.concat(res.data.comments);
-        this.pageNo++;
-        this.loading = false;
-        if (res.data.comments.length <= 0) this.finished = true;
-      });
+      if (this.opt.type) {
+        LoadCommentsAPI({
+          ...this.opt,
+          pageNo: this.pageNo,
+          pageSize: this.pageSize,
+        }).then((res) => {
+          if (this.pageNo == 1) {
+            console.log(res.data.totalCount);
+            this.$emit("setTotalCount", res.data.totalCount);
+          }
+          this.list = this.list.concat(res.data.comments);
+          this.pageNo++;
+          this.loading = false;
+          if (res.data.comments.length <= 0) this.finished = true;
+        });
+      } else {
+        loadEventCommentAPI(this.opt.id).then((res) => {
+          this.list = [...res.topComments, ...res.hotComments, ...res.comments];
+          this.$emit("setTotalCount", this.list.length);
+          this.loading = false;
+          if (res.comments.length <= 0) this.finished = true;
+        });
+      }
     },
   },
   watch: {

@@ -4,7 +4,7 @@
       <h3>
         <slot name="title">推荐歌单</slot>
       </h3>
-      <router-link :to="route || '/'">
+      <router-link v-if="showButton" :to="route || '/'">
         <slot name="button" class="grid-link">更多</slot
         ><van-icon name="arrow" />
       </router-link>
@@ -20,6 +20,10 @@ export default {
   props: {
     route: {
       type: Object,
+    },
+    showButton: {
+      type: Boolean,
+      default: true,
     },
   },
 };

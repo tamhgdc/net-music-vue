@@ -118,7 +118,6 @@ const routes = [{
         meta: {
             isNavShow: false,
             isMiniPlayerShow: true,
-
             keepAlive: false,
         }
     },
@@ -129,7 +128,16 @@ const routes = [{
         meta: {
             isNavShow: true,
             isMiniPlayerShow: true,
-
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/topic-page/:id',
+        name: 'Topic',
+        component: () => import('../views/Topic.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: false,
             keepAlive: false,
         }
     }

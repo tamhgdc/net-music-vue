@@ -4,7 +4,7 @@
 
 ### 服务端部署
 
-服务端使用 [Binaryify/NeteaseCloudMusicApi: 网易云音乐 Node.js API service (github.com)](https://github.com/Binaryify/NeteaseCloudMusicApi) 
+服务端使用 [Binaryify/NeteaseCloudMusicApi: 网易云音乐 Node.js API service (github.com)](https://github.com/Binaryify/NeteaseCloudMusicApi)
 
 #### 1. 安装
 
@@ -18,8 +18,6 @@ npm i
 ```bash
 node app.js
 ```
-
-
 
 ### 项目部署
 
@@ -125,14 +123,12 @@ npm run serve # 运行
 
 - 歌单广场内容（精品区可筛选分类）
 - 排行榜 基本完成（可直接点图标播放全部，也可跳转歌单详情页）
-  - 官方榜单  判断是否包含 **ToplistType**
+  - 官方榜单 判断是否包含 **ToplistType**
   - 全球榜单（通过正则过滤 语 欧美等关键字）
   - 特色榜单 判断歌单描述是否匹配 ’首个‘
   - 曲风榜单 歌单名匹配 ‘云音乐’
   - 精品歌单 排除其它已有的就是精品
-  - 可以用sort配合 **playCount** 属性，按播放量降序或顺序排列
-
-
+  - 可以用 sort 配合 **playCount** 属性，按播放量降序或顺序排列
 
 ### 2022 年 1 月 8 日
 
@@ -142,9 +138,9 @@ npm run serve # 运行
 - 首页实现了专属雷达歌单和场景歌单两个模块
 - 歌单广场添加了 ”官方“ 选项卡（展示官方歌单）
 - 自动登录功能
-
-
-
+- 歌单收藏/取消收藏功能
+- 首页热门话题模块
+- 话题页面
 
 ## API
 
