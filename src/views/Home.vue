@@ -1,15 +1,31 @@
 <template>
   <div class="home">
+    <Top />
     <!-- 轮播图 -->
     <HomeSwiper :banners="banners" :delay="2000"></HomeSwiper>
     <!-- 滚动导航 -->
     <HomeDragBar />
     <!-- 推荐歌单 -->
-    <RemdList></RemdList>
+    <!-- <HomeRemdList /> -->
+    <HomeBasicList :key="options[0].title" :opt="options[0]" />
+
+    <!-- 雷达歌单 -->
+    <HomeBasicList :key="options[1].title" :opt="options[1]" />
+    <!-- <HomeRadarList /> -->
+    <!-- 热门话题 -->
+    <template v-if="isLogin">
+      <HomeHotTopic />
+    </template>
+
+    <!-- 场景歌单 -->
+    <!-- <HomeScenesList /> -->
+    <HomeBasicList :key="options[2].title" :opt="options[2]" />
+
     <!-- 为你推荐 -->
     <!-- 精选音乐视频 -->
-    <!-- 雷达歌单 -->
+
     <!-- 排行榜 -->
+
     <!-- 云村ktv -->
 
     <component v-for="code in blockCodes" :key="code" :is="code"></component>
@@ -18,10 +34,16 @@
 
 <script>
 // @ is an alias to /src
+import Top from "../components/Top.vue";
 import HomeSwiper from "../components/home/HomeSwiper.vue";
 import HomeDragBar from "../components/home/HomeDragBar.vue";
-import RemdList from "../components/home/RemdList.vue";
+// import HomeRemdList from "../components/home/HomeRemdList.vue";
+// import HomeRadarList from "../components/home/HomeRadarList.vue";
+// import HomeScenesList from "../components/home/HomeScenesList.vue";
+import HomeBasicList from "../components/home/HomeBasicList.vue";
+import HomeHotTopic from "../components/home/HomeHotTopic.vue";
 import { loadHomePageAPI } from "../service/homepage.js";
+import { mapState } from "vuex";
 
 export default {
   name: "Home",
@@ -31,6 +53,31 @@ export default {
       blocks: [],
       blockCodes: [],
       banners: [],
+      options: [
+        {
+          title: "推荐歌单",
+          route: {
+            name: "PlaylistPlaza",
+            params: { act: 0 },
+          },
+        },
+        {
+          title: "你的专属雷达歌单",
+          id: 1287293193,
+          route: {
+            name: "PlaylistPlaza",
+            params: { act: 1 },
+          },
+        },
+        {
+          title: "专属场景歌单",
+          id: 1463586082,
+          route: {
+            name: "PlaylistPlaza",
+            params: { act: 1 },
+          },
+        },
+      ],
     };
   },
   created() {
@@ -45,9 +92,17 @@ export default {
     });
   },
   components: {
+    Top,
     HomeDragBar,
-    RemdList,
+    // HomeRemdList,
+    // HomeRadarList,
+    // HomeScenesList,
     HomeSwiper,
+    HomeBasicList,
+    HomeHotTopic,
+  },
+  computed: {
+    ...mapState("user", ["profile", "isLogin"]),
   },
 };
 </script>

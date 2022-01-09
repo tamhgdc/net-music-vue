@@ -27,3 +27,11 @@ export const loadLyricAPI = (id) => get('/lyric', { id })
  * @returns 
  */
 export const loadSongDetailAPI = (ids) => get('/song/detail', { ids })
+
+
+/**
+ * 批量获取歌曲详情
+ * @param {*} id 
+ * @returns 
+ */
+export const loadSongDetailsAPI = (ids) => get('/song/detail', ids, true, "ids")

@@ -46,7 +46,7 @@ export default {
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin-top: 12vw !important;
+  margin-top: 26vw !important;
   padding-top: 12vw !important;
   .van-image {
     position: absolute;

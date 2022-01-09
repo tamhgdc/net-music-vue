@@ -60,3 +60,10 @@ export const sendCommentAPI = (params) => post('/comment', params)
  * @returns 
  */
 export const delCommentAPI = (params) => post('/comment', params)
+
+/**
+ * 获取动态评论
+ * @param {*} threadId 动态id 
+ * @returns 
+ */
+export const loadEventCommentAPI = (params) => get('/comment/event', { threadId: params })

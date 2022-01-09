@@ -1,13 +1,13 @@
 <template>
   <div v-if="playlist.length > 0" class="playlist-panel">
-    <van-tabs v-model="activeName">
-      <van-tab title="创建歌单" name="a">
+    <van-tabs v-model="active" scrollspy animated>
+      <van-tab title="创建歌单">
         <MinePlayList :playlist="playlist" />
       </van-tab>
-      <van-tab title="收藏的歌单" name="b">
+      <van-tab title="收藏的歌单">
         <MinePlayList :playlist="favoritePlaylist" />
       </van-tab>
-      <van-tab title="为你推荐" name="c">
+      <van-tab title="为你推荐">
         <MineRemdList :playlist="recommendPlaylist" />
       </van-tab>
     </van-tabs>
@@ -21,7 +21,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      activeName: "a",
+      active: "0",
     };
   },
   computed: {

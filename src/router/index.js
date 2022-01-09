@@ -11,7 +11,7 @@ const routes = [{
         meta: {
             isNavShow: true,
             isMiniPlayerShow: true,
-            isTopShow: true,
+
             keepAlive: false,
         }
     },
@@ -22,8 +22,8 @@ const routes = [{
         meta: {
             isNavShow: true,
             isMiniPlayerShow: true,
-            isTopShow: true,
-            keepAlive: true,
+
+            keepAlive: false,
         }
     },
     {
@@ -33,18 +33,18 @@ const routes = [{
         meta: {
             isNavShow: false,
             isMiniPlayerShow: true,
-            isTopShow: false,
+
             keepAlive: false,
         }
     },
     {
-        path: '/playlist-plaza',
+        path: '/playlist-plaza/:curr?',
         name: 'PlaylistPlaza',
         component: () => import('../views/PlaylistPlaza.vue'),
         meta: {
             isNavShow: false,
             isMiniPlayerShow: true,
-            isTopShow: false,
+
             keepAlive: false,
         }
     },
@@ -55,7 +55,7 @@ const routes = [{
         meta: {
             isNavShow: false,
             isMiniPlayerShow: true,
-            isTopShow: false,
+
             keepAlive: false,
         }
     },
@@ -77,7 +77,7 @@ const routes = [{
         meta: {
             isNavShow: false,
             isMiniPlayerShow: false,
-            isTopShow: false,
+
         }
     },
     {
@@ -107,7 +107,7 @@ const routes = [{
         meta: {
             isNavShow: false,
             isMiniPlayerShow: true,
-            isTopShow: false,
+
             keepAlive: false,
         }
     },
@@ -118,7 +118,46 @@ const routes = [{
         meta: {
             isNavShow: false,
             isMiniPlayerShow: true,
-            isTopShow: false,
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/follow',
+        name: 'Follow',
+        component: () => import('../views/Follow.vue'),
+        meta: {
+            isNavShow: true,
+            isMiniPlayerShow: true,
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/topic-page/:id',
+        name: 'Topic',
+        component: () => import('../views/Topic.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: false,
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/search',
+        name: 'Search',
+        component: () => import('../views/Search.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/search/:key',
+        name: 'SearchResult',
+        component: () => import('../views/SearchResult.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
             keepAlive: false,
         }
     }

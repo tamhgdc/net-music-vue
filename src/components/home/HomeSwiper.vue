@@ -44,6 +44,7 @@ export default {
 
 <style lang="less">
 .mySwiper {
+  margin-top: 14vw;
   width: 100vw;
   .swiper-slide {
     width: 90vw;

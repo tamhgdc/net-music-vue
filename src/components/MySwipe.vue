@@ -8,32 +8,40 @@
       indicator-color="white"
     >
       <van-swipe-item v-for="item in banners" :key="item.bannerId">
-        <img :src="item.pic" alt="" />
+        <img :src="item.imageUrl" alt="" />
       </van-swipe-item>
     </van-swipe>
   </div>
 </template>
 
 <script>
+import { loadBannersAPI } from "../service/banners";
 export default {
-  props: ["banners"],
+  data() {
+    return {
+      banners: [],
+    };
+  },
+  created() {
+    loadBannersAPI().then((res) => {
+      this.banners = res.banners;
+    });
+  },
 };
 </script>
 
 <style lang="less" scoped>
 .my-swipe {
   position: relative;
-  width: 90vw;
+  width: 100vw;
   margin: 0 auto;
-  border-radius: 10px;
-  background-color: aqua;
   overflow: hidden;
 }
 .my-swipe .van-swipe-item {
   color: #fff;
   text-align: center;
   img {
-    width: 100%;
+    width: 100vw;
   }
 }
 .van-swipe-indicators {

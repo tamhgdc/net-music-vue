@@ -25,6 +25,7 @@
         v-for="pl in list"
         :key="pl.id"
         :size="'28vw'"
+        :mode="true"
         :opt="{
           route: {
             name: 'List',

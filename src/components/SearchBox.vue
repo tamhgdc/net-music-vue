@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="$router.push({ name: 'Search' })">
     <van-search
       class="search-box"
       background="#f5f5f5"

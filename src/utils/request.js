@@ -43,12 +43,12 @@ instance.interceptors.response.use(
  * @returns 
  */
 export function get(url, params, all = false, key = '') {
-    console.log(params);
+    // console.log(params, all);
     /* 处理高并发请求 */
     if (all) {
         return Promise.all(params.reduce((p, c) => {
             const obj = {};
-            obj[key] = c[key]
+            obj[key] = c[key] || c
             return p.concat(get(url, obj).catch(() => 'error'))
         }, []))
     } else {

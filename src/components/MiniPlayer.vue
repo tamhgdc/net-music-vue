@@ -1,5 +1,9 @@
 <template>
-  <div v-if="playlist.length > 0" class="mini-player">
+  <div
+    :style="{ bottom: $route.meta.isNavShow ? '10vh' : '0' }"
+    v-if="playlist.length > 0"
+    class="mini-player"
+  >
     <div class="left" @click="goToPlayer">
       <div class="disc">
         <PlayerDisc
@@ -109,8 +113,9 @@ export default {
 .mini-player {
   width: 100vw;
   height: 12vw;
-  background-color: #ffffff80;
-  position: relative;
+  background-color: #ffffffee;
+  position: fixed;
+  bottom: 10vh;
   display: flex;
   justify-content: space-between;
   .left {
