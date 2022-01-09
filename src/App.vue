@@ -4,12 +4,16 @@
     <keep-alive>
       <router-view
         v-if="$route.meta.keepAlive"
-        :style="{ paddingBottom: $route.meta.isMiniPlayerShow ? '10vh' : 0 }"
+        :style="{
+          paddingBottom,
+        }"
       />
     </keep-alive>
     <router-view
       v-if="!$route.meta.keepAlive"
-      :style="{ paddingBottom: $route.meta.isMiniPlayerShow ? '10vh' : 0 }"
+      :style="{
+        paddingBottom,
+      }"
     />
     <!-- 底部导航 -->
     <MiniPlayer v-show="$route.meta.isMiniPlayerShow" />
@@ -41,7 +45,7 @@
 <script>
 import MiniPlayer from "./components/MiniPlayer.vue";
 import { loginByPhoneAPI, loginByEmailAPI } from "./service/login.js";
-import { mapMutations, mapActions } from "vuex";
+import { mapMutations, mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -86,6 +90,23 @@ export default {
     },
     ...mapActions("user", ["loadUserData"]),
     ...mapMutations("user", ["setProfile"]),
+  },
+  computed: {
+    ...mapState("player", ["playState"]),
+    paddingBottom() {
+      if (
+        this.$route.meta.isNavShow ||
+        (this.$route.meta.isMiniPlayerShow && this.playState)
+      )
+        return "10vh";
+      else if (
+        this.$route.meta.isNavShow &&
+        this.$route.meta.isMiniPlayerShow &&
+        this.playState
+      )
+        return "20vh";
+      else return 0;
+    },
   },
 };
 </script>
@@ -151,8 +172,10 @@ a {
   flex-direction: column;
   > div:nth-of-type(1) {
     flex: 1;
+
     overflow: auto;
     scrollbar-width: none; /* Firefox */
+
     &::-webkit-scrollbar {
       display: none; /* Chrome Safari */
     }

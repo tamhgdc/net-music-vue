@@ -20,4 +20,4 @@ export const loadTopicDetailAPI = (actid) => get('/topic/detail', { actid })
  * @param {*} actId 话题 id
  * @returns 
  */
-export const loadTopicDetailHotEventAPI = (actid) => get('/topic/detail/event/hot', { actid })
+export const loadTopicDetailHotEventAPI = (actid) => get('/topic/detail/event/hot', actid)

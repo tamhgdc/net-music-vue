@@ -16,6 +16,7 @@
         <div>
           <span class="usr">{{ e.user.nickname }}</span>
         </div>
+        <span class="time">{{ e.eventTime | timeFormat }}</span>
       </div>
 
       <!-- 内容 -->
@@ -31,6 +32,7 @@
               :key="pic.squareUrl"
               :src="pic.squareUrl"
               alt=""
+              @click="showBigImg(pic.originUrl)"
             />
           </div>
         </div>
@@ -38,14 +40,19 @@
           v-else-if="e.pics.length == 1 && e.pics[0] != undefined"
           class="pic"
         >
-          <van-image width="100%" height="100%" :src="e.pics[0].originUrl" />
+          <van-image
+            @click="showBigImg(e.pics[0].originUrl)"
+            width="100%"
+            height="100%"
+            :src="e.pics[0].squareUrl"
+          />
         </div>
 
         <!-- 歌曲 -->
         <div v-if="e.content.song" class="song">
           <div class="cover" @click="play(e.content.song.id)">
             <img :src="e.content.song.album.picUrl" alt="" />
-            <img src="../../assets/play.png" alt="" />
+            <img src="../assets/play.png" alt="" />
           </div>
           <div class="info">
             <div class="name van-ellipsis">{{ e.content.song.album.name }}</div>
@@ -63,8 +70,9 @@
 </template>
 
 <script>
-import TopicOperate from "./TopicOperate.vue";
+import TopicOperate from "./topic/TopicOperate.vue";
 import { mapActions } from "vuex";
+import { ImagePreview } from "vant";
 export default {
   props: ["e"],
 
@@ -72,6 +80,9 @@ export default {
     console.log(JSON.parse(this.e.json));
   },
   methods: {
+    showBigImg(src) {
+      ImagePreview([src]);
+    },
     play(id) {
       this.playById(id);
       this.$router.push({
@@ -82,17 +93,19 @@ export default {
   },
   computed: {
     msg() {
-      console.log(
-        this.e.content.msg.replace(/(#.*#)/, "<span class='tag'>$1</span><br>")
-      );
       return this.e.content.msg
-        .replace(/\n/g, "<br>")
-        .replace(/(#.*#)/, "<span class='tag'>$1</span>");
+
+        .replace(/(#.+# )|(#.+#)/g, "<span style=' color: #527ca9;'>$&</span>")
+        .replace(/\n/g, "<br>");
     },
   },
   filters: {
     artistsFlat(v) {
       return v.map((x) => x.name).join("/");
+    },
+    timeFormat(v) {
+      const data = new Date(v);
+      return data.getFullYear() + "-" + data.getMonth() + "-" + data.getDate();
     },
   },
   components: {
@@ -116,9 +129,14 @@ export default {
       .usr {
         color: @main;
       }
+      .time {
+        color: #7b7b7b;
+        font-size: 3.5vw;
+      }
     }
 
     .content {
+      padding: 2vw 0 0;
       .msg {
         .tag {
           color: #527ca9;
@@ -132,7 +150,8 @@ export default {
           width: 100%;
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          grid-gap: 1vw;
+          column-gap: 1vw;
+          row-gap: 1vw;
           img {
             height: 100%;
             width: 100%;

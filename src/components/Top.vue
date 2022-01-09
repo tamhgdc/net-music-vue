@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <div v-if="mode" class="top">
+  <div class="top">
+    <template v-if="mode">
       <SidePopup />
       <SearchBox />
       <van-icon name="add" size="24" color="#fe3a3b" />
-    </div>
-    <div v-if="!mode" class="top-mode">
+    </template>
+    <template v-if="!mode">
       <van-tabs @change="change" v-model="active" animated swipeable sticky>
         <template #nav-left>
           <div class="left"><SidePopup /></div>
@@ -17,7 +17,7 @@
           </div>
         </template>
       </van-tabs>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -55,21 +55,32 @@ export default {
 
 <style lang="less">
 .top {
+  width: 94vw;
+  position: fixed;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 14vw;
-  padding: 0 2vw;
-}
-.middle {
-  width: 70vw;
-}
-.top-mode {
+  background: white;
+  z-index: 100;
+  height: 8vh;
+  padding: 0 3vw;
+  .middle {
+    width: 70vw;
+    height: 14vw;
+  }
   .left,
   .right {
     height: 14vw;
     line-height: 14vw;
     padding: 0 2vw;
+  }
+  .van-tabs {
+    width: 100%;
+    height: 14vw;
+  }
+  .search-box {
+    padding: 0;
+    border-radius: 50%;
   }
 }
 </style>

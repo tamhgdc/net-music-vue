@@ -9,7 +9,7 @@
       <div v-for="(item, i) in list" :key="i" class="list-wrap">
         <PLBlock
           v-for="pl in item"
-          :key="pl.id"
+          :key="pl.id + Math.random() * 10000"
           :size="'30vw'"
           :opt="{
             route: {
@@ -55,7 +55,6 @@ export default {
         for (let i = 0; i < res.playlists.length; i += 3) {
           this.list.push(res.playlists.slice(i, i + 3));
         }
-        console.log(this.list);
         this.offset++;
         this.loading = false;
         this.finished = res.code != 200;

@@ -29,7 +29,6 @@ export default {
 
 <style lang="less" scoped>
 .mine {
-  overflow: scroll;
   & > div {
     width: 80vw;
     margin-left: auto;

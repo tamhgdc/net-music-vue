@@ -74,12 +74,10 @@ export default {
               limit: this.limit,
               before: this.updateTime,
             };
-      console.log(params);
       loadHighQualityPlayListAPI(params).then((res) => {
         for (let i = 0; i < res.playlists.length; i += 3) {
           this.list.push(res.playlists.slice(i, i + 3));
         }
-        console.log(this.list);
         this.updateTime = res.lasttime;
         this.loading = false;
         this.finished = res.code != 200 || this.list.length > 50;

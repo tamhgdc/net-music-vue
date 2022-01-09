@@ -1,7 +1,7 @@
 <template>
   <div class="daily-remd-list">
-    <BaseTopNav />
-    <div></div>
+    <BaseTopNav :title="'每日推荐'" />
+    <MySwipe />
     <ListOperate :detail="playlist" />
     <van-list
       v-if="playlist.length > 0"
@@ -27,6 +27,7 @@
 import BaseTopNav from "../components/BaseTopNav.vue";
 import ListOperate from "../components/list/ListOperate.vue";
 import ListCell from "../components/list/ListCell.vue";
+import MySwipe from "../components/MySwipe.vue";
 import { loadDailyRemdSongsAPI } from "../service/playlist";
 export default {
   data() {
@@ -42,6 +43,7 @@ export default {
     BaseTopNav,
     ListOperate,
     ListCell,
+    MySwipe,
   },
   created() {
     loadDailyRemdSongsAPI().then((res) => {

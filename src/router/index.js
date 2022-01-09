@@ -140,6 +140,26 @@ const routes = [{
             isMiniPlayerShow: false,
             keepAlive: false,
         }
+    },
+    {
+        path: '/search',
+        name: 'Search',
+        component: () => import('../views/Search.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            keepAlive: false,
+        }
+    },
+    {
+        path: '/search/:key',
+        name: 'SearchResult',
+        component: () => import('../views/SearchResult.vue'),
+        meta: {
+            isNavShow: false,
+            isMiniPlayerShow: true,
+            keepAlive: false,
+        }
     }
 ]
 

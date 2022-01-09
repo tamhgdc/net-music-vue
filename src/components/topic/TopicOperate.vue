@@ -68,12 +68,14 @@ export default {
   width: 100%;
   height: 10vw;
   font-size: 5vw;
+  padding: 2vw 0;
   .o-left {
     display: flex;
     width: 60vw;
     .item {
       span {
         padding: 0 2vw;
+        font-size: 4vw;
       }
     }
   }

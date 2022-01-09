@@ -7,16 +7,19 @@
     <HomeDragBar />
     <!-- 推荐歌单 -->
     <!-- <HomeRemdList /> -->
+    <HomeBasicList :key="options[0].title" :opt="options[0]" />
 
     <!-- 雷达歌单 -->
-    <HomeBasicList v-for="opt in options" :key="opt.title" :opt="opt" />
+    <HomeBasicList :key="options[1].title" :opt="options[1]" />
     <!-- <HomeRadarList /> -->
+    <!-- 热门话题 -->
+    <template v-if="isLogin">
+      <HomeHotTopic />
+    </template>
 
     <!-- 场景歌单 -->
     <!-- <HomeScenesList /> -->
-
-    <!-- 热门话题 -->
-    <HomeHotTopic />
+    <HomeBasicList :key="options[2].title" :opt="options[2]" />
 
     <!-- 为你推荐 -->
     <!-- 精选音乐视频 -->
@@ -99,7 +102,7 @@ export default {
     HomeHotTopic,
   },
   computed: {
-    ...mapState("user", ["profile"]),
+    ...mapState("user", ["profile", "isLogin"]),
   },
 };
 </script>

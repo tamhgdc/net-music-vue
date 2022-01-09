@@ -28,17 +28,20 @@ export default {
 <style lang="less">
 .base-top-nav {
   .van-sticky {
+    display: fixed;
+    top: 0;
+    left: 0;
     background: white;
-  }
-  .nav {
-    width: 94vw;
-    background: white;
-    height: 14vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 5vw;
-    padding: 0 3vw;
+    .nav {
+      width: 94vw;
+      background: white;
+      height: 14vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 5vw;
+      padding: 0 3vw;
+    }
   }
 }
 </style>

@@ -30,10 +30,10 @@ export default {
 .follow {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   width: 100vw;
-  > div:nth-of-type(2) {
-    flex: 1;
+  .follow-trend {
+    padding-top: 10vh;
+    padding-bottom: 10vh;
   }
 }
 </style>
