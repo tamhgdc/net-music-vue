@@ -19,6 +19,14 @@ npm i
 node app.js
 ```
 
+#### 3. 也可以使用在线服务器
+
+只需修改一下 src/utils/request.js 中的 baseURL
+
+```js
+https://netease-cloud-music-api-mocha-seven.vercel.app/
+```
+
 ### 项目部署
 
 #### 1.安装
