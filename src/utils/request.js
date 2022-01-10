@@ -3,9 +3,9 @@ import axios from "axios";
 const instance = axios.create({
     // baseURL: "https://music.xuzhixiang.top",
     // baseURL: "http://net-music.penkuoer.com",
-    // baseURL: "https://netease-cloud-music-api-mocha-seven.vercel.app/",
-    baseURL: "http://localhost:3000", // 网络请求的基础地址
-    timeout: 5000, // 超时时间
+    baseURL: "https://netease-cloud-music-api-mocha-seven.vercel.app/",
+    // baseURL: "http://localhost:3000", // 网络请求的基础地址
+    timeout: 10000, // 超时时间
     withCredentials: true,
 });
 
