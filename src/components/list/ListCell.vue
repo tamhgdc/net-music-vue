@@ -55,12 +55,15 @@ export default {
     ...mapActions("player", ["playById"]),
   },
   computed: {
+    // 无损
     isShowSQ() {
       return this.opt.detail.maxbr > 320000;
     },
+    // vip
     isShowVIP() {
       return this.opt.detail.sp == 0 && this.opt.detail.cp == 0;
     },
+    // 试听（只能动态获取 mp3 地址播放）
     isShowFee() {
       return this.opt.detail.fee == 1;
     },

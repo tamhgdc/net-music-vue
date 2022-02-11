@@ -1,4 +1,6 @@
 import axios from "axios";
+// 开发环境走 localhost 3000，需要本地跑接口服务器 这个是链接 https://github.com/Binaryify/NeteaseCloudMusicApi
+// 非开发环境调用已部署至 vercel 的接口
 const baseURL = process.env.NODE_ENV === "development" ?"http://localhost:3000":"https://netease-cloud-music-api-mocha-seven.vercel.app/"
 const instance = axios.create({
     baseURL,
