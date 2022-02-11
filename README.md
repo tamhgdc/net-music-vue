@@ -165,6 +165,7 @@ npm run serve # 运行
 - 部署至 Vercel
 - 解决 首页 keep-alive 页面切换后轮播图不动 bug
 - 解决 搜索框 高亮提示 导致搜索关键词带 html 标签 bug（正则表达式剔除 html 标签）
+- 改善 mp3 url 获取（副作用 某些歌可能听不了）
 
 ## API
 
