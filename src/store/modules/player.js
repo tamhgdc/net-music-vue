@@ -36,10 +36,15 @@ export default {
             if (!payload) return
             console.log(payload);
             /* 获取mp3链接 */
-            await loadSongUrlAPI(payload).then(r => {
-                song.url = r.data[0].url
-                song.id = payload
-            })
+            /* 新方案 直接拼接 */
+            song.url = `https://music.163.com/song/media/outer/url?id=${payload}.mp3 `
+            song.id = payload
+            
+            /* 老方案 动态获取音乐 url */
+            // await loadSongUrlAPI(payload).then(r => {
+            //     song.url = r.data[0].url
+            //     song.id = payload
+            // })
             /* 获取歌曲详情 */
             await loadSongDetailAPI(payload).then(r => {
                 song.detail = r.songs[0]
