@@ -48,7 +48,16 @@ export default {
             /* 获取歌曲详情 */
             await loadSongDetailAPI(payload).then(r => {
                 song.detail = r.songs[0]
+                console.log(song.detail);
+                
             })
+            // 解决采用新方案后 试听歌曲无法播放问题
+            if(song.detail.fee == 1) {
+                await loadSongUrlAPI(payload).then(r => {
+                    song.url = r.data[0].url
+                    console.log(r.data[0].url);
+                })
+            }
             commit('addUrl', song)
         },
         /**
