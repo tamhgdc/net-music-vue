@@ -18,7 +18,7 @@
         v-for="s in suggestList"
         :key="s.feature + Math.random() * 100000"
         class="s-item"
-        @click="searchByKey(s.keyword)"
+        @click="searchByKey(replaceKey(s.keyword))"
       >
         <div class="icon">
           <van-icon name="search"></van-icon>
@@ -30,7 +30,7 @@
     <div class="hot-list">
       <div
         v-for="(item, i) in list"
-        :key="item.content"
+        :key="item.content + Math.random() * 100000"
         class="item"
         @click="searchByKey(item.searchWord)"
       >
@@ -97,7 +97,11 @@ export default {
       });
     },
     searchByKey(key) {
+      // console.log(key);
       this.$router.push({ name: "SearchResult", params: { key } });
+    },
+    replaceKey(v) {
+      return v.replaceAll(/<\/?.+?>/gi, "");
     },
   },
 };

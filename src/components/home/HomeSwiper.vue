@@ -1,5 +1,9 @@
 <template>
-  <div v-swiper:mySwiper="swiperOption" class="mySwiper">
+  <div
+    v-if="banners.length > 0 && isKeep"
+    v-swiper:mySwiper="swiperOption"
+    class="mySwiper"
+  >
     <div class="swiper-wrapper">
       <div class="swiper-slide" :key="banner.id" v-for="banner in banners">
         <div class="item">
@@ -25,6 +29,7 @@ export default {
   props: ["banners", "delay"],
   data() {
     return {
+      isKeep: false,
       swiperOption: {
         autoplay: {
           delay: this.delay,
@@ -38,6 +43,12 @@ export default {
         },
       },
     };
+  },
+  activated() {
+    this.isKeep = true;
+  },
+  deactivated() {
+    this.isKeep = false;
   },
 };
 </script>

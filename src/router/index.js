@@ -12,7 +12,7 @@ const routes = [{
             isNavShow: true,
             isMiniPlayerShow: true,
 
-            keepAlive: false,
+            keepAlive: true,
         }
     },
     {

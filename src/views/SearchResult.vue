@@ -57,7 +57,7 @@ export default {
       // });
 
       this.results = res.map((x) => x.result);
-      console.log(this.results[0]);
+      console.log("demo", this.results[0]);
     });
   },
   methods: {
