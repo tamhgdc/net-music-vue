@@ -5,6 +5,7 @@
         ref="bg"
         width="100vw"
         height="100vh"
+        fit="cover"
         :src="imgSrc + '?param=700y700'"
       >
       </van-image>
