@@ -76,11 +76,11 @@ export default {
   watch: {
     curr(v) {
       if (v) {
-        this.imgSrc = v.detail.al.picUrl || v.detail.album.picUrl;
-        this.n = v.detail.name;
+        this.imgSrc = v.al.picUrl || v.album.picUrl;
+        this.n = v.name;
 
         // 解析歌词
-        loadLyricAPI(v.detail.id).then((lrcData) => {
+        loadLyricAPI(v.id).then((lrcData) => {
           // console.log(lrcData);
           // 加载歌词
           if (

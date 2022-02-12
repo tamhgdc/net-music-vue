@@ -6,14 +6,8 @@ import player from './modules/player'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-    state: {
-
-    },
-    actions: {},
-    mutations: {},
     modules: {
         user,
         player
     },
-    getters: {},
 })

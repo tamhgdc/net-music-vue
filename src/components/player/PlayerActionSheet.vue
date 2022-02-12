@@ -28,7 +28,7 @@
                 src="../../assets/playing.gif"
                 alt=""
               />
-              <span @click="clickHandle(item.id)">{{ item.detail.name }}</span>
+              <span @click="clickHandle(item.id)">{{ item.name }}</span>
             </div>
             <van-icon name="close" @click="removeById(item.id)" />
           </div>
