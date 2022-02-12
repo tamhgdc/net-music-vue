@@ -27,7 +27,7 @@ export default {
           tags: res.sub.filter((x) => x.category == c),
         });
       }, []);
-      console.log(this.categories);
+      // console.log(this.categories);
     });
   },
   components: {

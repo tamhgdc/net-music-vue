@@ -1,7 +1,12 @@
 <template>
   <div :class="playState ? 'player start' : 'player stop'">
     <div class="bg-wrap">
-      <van-image ref="bg" width="100vh" :src="imgSrc + '?param=700y700'">
+      <van-image
+        ref="bg"
+        width="100vw"
+        height="100vh"
+        :src="imgSrc + '?param=700y700'"
+      >
       </van-image>
       <div class="overlay"></div>
     </div>
