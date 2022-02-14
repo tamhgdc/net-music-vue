@@ -263,8 +263,7 @@ export default {
                 // 获取到歌曲url后 调setPlayerUrl切换播放歌曲
                 commit('setPlayerUrl', { currIndex: payload, url: res.data[0].url })
             })
-        },
-
+        },    
     },
 
     mutations: {
