@@ -3,14 +3,14 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 // 路由配置 和以前一样
 const routes: RouteRecordRaw[] = [
 	{
-		path: "/home",
+		path: "/",
 		name: "home",
-		component: () => import("@/views/Home"),
+		component: () => import("@/views/Home.vue"),
 	},
 	{
 		path: "/list",
 		name: "list",
-		component: () => import("@/views/List"),
+		component: () => import("@/views/List.vue"),
 	},
 ];
 
