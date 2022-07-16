@@ -1,13 +1,24 @@
 <script setup lang="ts">
-import { onBeforeMount } from "@vue/runtime-core";
-import { homeService } from "@/service";
-onBeforeMount(async () => {
-	console.log(await homeService.loadHomePage());
+import { ref, onMounted } from "vue";
+import { homeController } from "@/service";
+import Banner from "@/components/Banner.vue";
+
+const banners = ref([]);
+
+onMounted(async () => {
+	const res = await homeController.banners();
+	banners.value = res.data.banners || [];
+	// console.log(home.value);
 });
 </script>
 
 <template>
-	<h2>home</h2>
+	<h2 class="title">home</h2>
+	<banner :banners="banners" />
 </template>
 
-<style></style>
+<style scoped>
+.title {
+	font-size: 56px;
+}
+</style>

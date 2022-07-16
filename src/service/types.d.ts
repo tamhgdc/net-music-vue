@@ -1,6 +1,7 @@
 declare namespace API {
 	interface Banner {
-		imageUrl: string;
+		pic?: string;
+		imageUrl?: string;
 		titleColor: string;
 		typeTitle: string;
 		url: string;
