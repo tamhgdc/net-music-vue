@@ -8,9 +8,7 @@
       <div class="disc">
         <PlayerDisc
           :state="playState"
-          :imgSrc="
-            readied ? curr.detail.al.picUrl || curr.detail.album.picUrl : null
-          "
+          :imgSrc="readied ? curr.al.picUrl || curr.album.picUrl : null"
           :size="'15vw'"
         />
       </div>
@@ -18,7 +16,7 @@
         class="name"
         scrollable
         color="black"
-        :text="readied ? curr.detail.name : null"
+        :text="readied ? curr.name : null"
       />
     </div>
 

@@ -1,12 +1,13 @@
 <template>
-  <div v-if="curr.detail != undefined" class="player-op-panel">
-    <van-icon size="6vw" :name="fav ? 'like' : 'like-o'" />
+  <div v-if="curr.url != undefined" class="player-op-panel">
+    <van-icon
+      size="6vw"
+      :name="curr.isFav ? 'like' : 'like-o'"
+      @click="likeOrNot"
+    />
     <van-icon size="6vw" name="down" />
     <van-icon size="6vw" name="fire-o" />
-    <van-badge
-      :content="curr.detail.dt | commentCountFormat"
-      color="transparent"
-    >
+    <van-badge :content="curr.dt | commentCountFormat" color="transparent">
       <van-icon
         size="6vw"
         name="chat-o"
@@ -26,23 +27,29 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
+import { likeOrNotAPI } from "../../service/user";
 export default {
   props: ["id"],
   computed: {
     ...mapState("player", ["playlist", "curr"]),
     //TODO： 歌曲喜欢功能
-    fav() {
-      console.log(this.playlist);
-      return false;
-      // return this.playlist
-      //   ? this.playlist.find((x) => x.id == this.id).isFav
-      //   : false;
-    },
   },
   filters: {
     commentCountFormat(v) {
       return v > 1000 ? 999 + "+" : v > 10000 ? 1 + "万+" : v;
+    },
+  },
+  methods: {
+    ...mapMutations("player", ["setFav"]),
+    likeOrNot() {
+      likeOrNotAPI({
+        id: this.curr.id,
+        like: this.curr.isFav ? "true" : "false",
+      }).then((res) => {
+        console.log(res);
+        if (res.code == 200) this.setFav();
+      });
     },
   },
 };
